@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "content_scripts": [
     {
-      "matches": ["https://blank.org/"],
+      "matches": ["https://blank.org/", "https://play.pokemonshowdown.com/*"],
       "run_at": "document_end",
       "js": [],
       "css": [],
