@@ -13,8 +13,8 @@ import {
 import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 interface TeamProps {
-  team: string[] | null;
   isRandomBattle: isRandomBattleReturn;
+  opponentsTeam: boolean;
 }
 const config = { attributes: true, childList: true, subtree: true };
 
@@ -24,7 +24,7 @@ const config = { attributes: true, childList: true, subtree: true };
 const messageLog = document.getElementsByClassName("inner message-log")[0];
 
 //fetches latest pokemon data from auto updating dataset
-export const TeamDisplay = ({ team, isRandomBattle }: TeamProps) => {
+export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
   const [teams, setTeams] = useState<[string[], string[]] | null>(null);
   // const [activePokemon, setActivePokemon] = useState<string | null>(
   //   getCurrentPokemon(team)
@@ -35,13 +35,17 @@ export const TeamDisplay = ({ team, isRandomBattle }: TeamProps) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
         if (mutation.addedNodes[0]?.nodeName === "H2") {
-          console.log("newturn", mutation.addedNodes);
           const teamIcons = document.getElementsByClassName("teamicons");
           const userTeam = [...teamIcons[0].children, ...teamIcons[1].children];
           const opponentsTeam = [
             ...teamIcons[3].children,
             ...teamIcons[4].children,
           ];
+          console.log(
+            "newturn",
+            userTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
+            opponentsTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel))
+          );
           setTeams([
             userTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
             opponentsTeam.map((pokemon) =>
@@ -55,6 +59,7 @@ export const TeamDisplay = ({ team, isRandomBattle }: TeamProps) => {
     }
   }, []);
   useEffect(() => {
+    console.log("messageLog", messageLog);
     const messageLogObserver = new MutationObserver(callback);
     messageLogObserver.observe(messageLog, config);
     return () => messageLogObserver.disconnect();
@@ -78,22 +83,20 @@ export const TeamDisplay = ({ team, isRandomBattle }: TeamProps) => {
   //     setDisplayedPokemon(selectedPokemon);
   //   }
   // }, [selectedPokemon, activePokemon]);
-  if (!team) {
-    return (
-      <ButtonDisplay>
-        <SpriteImage name={pokemonNameFilter("")} />
-        <SpriteImage name={pokemonNameFilter("")} />
-        <SpriteImage name={pokemonNameFilter("")} />
-        <SpriteImage name={pokemonNameFilter("")} />
-        <SpriteImage name={pokemonNameFilter("")} />
-        <SpriteImage name={pokemonNameFilter("")} />
-      </ButtonDisplay>
-    );
-  }
-  return (
+
+  return !teams ? (
+    <ButtonDisplay>
+      <SpriteImage name={pokemonNameFilter("")} />
+      <SpriteImage name={pokemonNameFilter("")} />
+      <SpriteImage name={pokemonNameFilter("")} />
+      <SpriteImage name={pokemonNameFilter("")} />
+      <SpriteImage name={pokemonNameFilter("")} />
+      <SpriteImage name={pokemonNameFilter("")} />
+    </ButtonDisplay>
+  ) : (
     <>
       <ButtonDisplay>
-        {team.map((x, idx) => (
+        {teams[Number(opponentsTeam)].map((x, idx) => (
           <Button
             key={pokemonNameFilter(x) + idx}
             onClick={() => {
@@ -115,10 +118,10 @@ export const TeamDisplay = ({ team, isRandomBattle }: TeamProps) => {
       )}
     </>
   );
-  // !team ? (
-  // <>
-  //   <OpponentsTeamUnavailable />
-  // </>;
-  // ) : (
-  // );
 };
+// !team ? (
+// <>
+//   <OpponentsTeamUnavailable />
+// </>;
+// ) : (
+// );
