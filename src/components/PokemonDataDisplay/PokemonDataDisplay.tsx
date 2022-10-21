@@ -33,6 +33,7 @@ export const PokemonDataDisplay = ({
     }
   }, [pokemon]);
   const regExPokemonName = pokemon.match(/^([\w]+)-/);
+  console.log("isRandomBattle", isRandomBattle);
   return (
     <>
       <PokemonName href={`https://www.smogon.com/dex/ss/pokemon/${pokemon}/`}>
