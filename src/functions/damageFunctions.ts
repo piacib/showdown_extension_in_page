@@ -13,7 +13,7 @@ const damageAdjustor = (objectEntries: [string, number]): [string, number] => {
 
 // creates damage obj from arr of entries in type.damageTaken object
 const damageCalculatorOneType = (type: TypeName) => {
-  const damageTaken = Object.entries(Types[type].damageTaken);
+  const damageTaken = Object.entries(Types[type.toLowerCase()].damageTaken);
   const damageConverted = damageTaken.map((x) => damageAdjustor(x));
   return Object.fromEntries(damageConverted);
 };
