@@ -30,9 +30,12 @@ export const Button = styled.button`
 export const AppDisplay = styled.div`
   width: 100%;
   min-width: 100px;
-  /* height: 100%; */
-  /* max-width: 640px; */
+  padding: 36px 8px 0;
+  display: grid;
   min-height: 250px;
   height: 30%;
- 
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
