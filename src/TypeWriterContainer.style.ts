@@ -29,7 +29,7 @@ export const TypeWriterContainer = styled.div`
     overflow: hidden; /* Ensures the content is not revealed until the animation */
     border-right: 0.25em solid black; /* The typwriter cursor */
     white-space: nowrap; /* Keeps the content on a single line */
-    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    margin: 0.5rem auto; /* Gives that scrolling effect as the typing happens */
     /* letter-spacing: 0.15em; Adjust as needed */
     animation: ${typing} 3.5s steps(40, end),
       ${blinkCaret} 1.5s step-end infinite;
