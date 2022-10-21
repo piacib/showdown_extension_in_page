@@ -16,8 +16,8 @@ declare module "styled-components" {
     };
     color: {
       typeColors: {
-        // [key: string]: string;
-        [Type in TypeName]: string;
+        [key: string]: string;
+        // [Type in TypeName]: string;
       };
     };
   }
