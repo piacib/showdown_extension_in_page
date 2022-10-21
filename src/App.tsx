@@ -1,7 +1,7 @@
 ///<reference types="chrome"/>
 import logo from "./logo.svg";
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TypeWriterContainer } from "./TypeWriterContainer.style";
 import { AppDisplay, Button } from "./App.styles";
 import { TeamDisplay } from "./components/TeamDisplay/TeamDisplay";
@@ -37,20 +37,32 @@ export const getMoveData = (data: string[] | null) => {
 
 function App() {
   const [opponentsTeam, setOpponentsTeam] = useState<boolean>(true);
-  const [team,setTeam]=useState()
+  const [team, setTeam] = useState();
   console.log("hello from extension");
-  console.log(getMoveData(["solar-beam"]));
+  const [randomBattle, setRandomBattle] = useState<string | false>(false);
+  useEffect(() => {
+    const path = window.location.pathname;
+    console.log(path);
+    if (path.includes("randombattle")) {
+      const match = path.match(/(?<=\-).+?(?=\-)/);
+      if (match && match[0]) {
+        setRandomBattle(match[0]);
+      }
+    }
+  }, []);
+  console.log("randomBattle", randomBattle);
   return (
     <AppDisplay>
       <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>
         Swap to {opponentsTeam ? "Users Team" : "Opponents Team"}
       </Button>
-      <h1>hELLO</h1>
       <TypeWriterContainer>
         <h1>Poke Info</h1>
       </TypeWriterContainer>
-      <p>I'm a Content Script in a Chrome Extension!</p>
-      <TeamDisplay  team={null} isRandomBattle={null} />
+      <TeamDisplay
+        opponentsTeam={opponentsTeam}
+        isRandomBattle={randomBattle}
+      />
     </AppDisplay>
   );
 }
