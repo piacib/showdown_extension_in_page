@@ -1,6 +1,6 @@
-import React from 'react';
-import pokeball from '../media/pokeball.svg';
-import { Sprites } from '@pkmn/img';
+import React from "react";
+import PokeballSVG from "../media/PokeballSvg";
+import { Sprites } from "@pkmn/img";
 interface SpriteImageProps {
   name: string;
   buttonSize?: number;
@@ -12,16 +12,16 @@ const SpriteImage: React.FC<SpriteImageProps> = ({
   maxButtonWidth = 50,
 }) => {
   const ButtonSizePX = `${buttonSize}px`;
-  if (name === 'Not revealed') {
+  if (name === "Not revealed") {
     return (
-      <img
-        src={pokeball}
-        alt={name}
+      <span
+        className={"picon"}
         style={{
-          width: ButtonSizePX,
-          height: ButtonSizePX,
+          transform: "scale(1.5)",
+          background:
+            "transparent url(https://play.pokemonshowdown.com/sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px",
         }}
-      ></img>
+      />
     );
   }
   const { url, w, h } = Sprites.getPokemon(name.toLowerCase(), {
@@ -29,11 +29,11 @@ const SpriteImage: React.FC<SpriteImageProps> = ({
     shiny: false,
   });
 
-  if (url === 'https://play.pokemonshowdown.com/sprites/gen5/0.png') {
+  if (url === "https://play.pokemonshowdown.com/sprites/gen5/0.png") {
     return (
       <img
         src={url}
-        alt={'question mark'}
+        alt={"question mark"}
         style={{
           width: ButtonSizePX,
           height: ButtonSizePX,
@@ -46,7 +46,11 @@ const SpriteImage: React.FC<SpriteImageProps> = ({
     <img
       src={url}
       alt={name}
-      style={{ width: width, height: ButtonSizePX, maxWidth: `${maxButtonWidth}px` }}
+      style={{
+        width: width,
+        height: ButtonSizePX,
+        maxWidth: `${maxButtonWidth}px`,
+      }}
     ></img>
   );
 };
