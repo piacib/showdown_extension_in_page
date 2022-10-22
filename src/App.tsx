@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { TypeWriterContainer } from "./TypeWriterContainer.style";
 import { AppDisplay, Button } from "./App.styles";
 import { TeamDisplay } from "./components/TeamDisplay/TeamDisplay";
+import { isDevelopmentMode } from "./functions";
 interface MoveResponse {
   move: string;
   type: string;
@@ -39,7 +40,9 @@ function App() {
   const [opponentsTeam, setOpponentsTeam] = useState<boolean>(true);
   const [team, setTeam] = useState();
   console.log("hello from extension");
-  const [randomBattle, setRandomBattle] = useState<string | false>(false);
+  const [randomBattle, setRandomBattle] = useState<string | false>(
+    isDevelopmentMode ? "gen8randomdoublesbattle" : false
+  );
   useEffect(() => {
     const path = window.location.pathname;
     console.log(path);

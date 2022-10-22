@@ -5,11 +5,17 @@ import App from "./App";
 import { theme } from "./theme";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "./GlobalStyles";
+import { isDevelopmentMode } from "./functions";
 
-const body = document.getElementsByClassName("battle-log");
+// if (isDevelopmentMode) {
+//   const battle = document.createElement("div");
+//   battle.className = "battle-log";
+//   document.body.appendChild(battle);
+// }
 const addDisplay = () => {
   const app = document.createElement("div");
   app.id = "react-root";
+  const battleLog = document.getElementsByClassName("battle-log");
 
   // Make sure the element that you want to mount the app to has loaded. You can
   // also use `append` or insert the app using another method:
@@ -17,8 +23,8 @@ const addDisplay = () => {
   //
   // Also control when the content script is injected from the manifest.json:
   // https://developer.chrome.com/docs/extensions/mv3/content_scripts/#run_time
-  if (body && body[0]) {
-    body[0].prepend(app);
+  if (battleLog && battleLog[0]) {
+    battleLog[0].prepend(app);
   }
 
   console.log(window.location.pathname);
@@ -35,7 +41,7 @@ const addDisplay = () => {
     </>
   );
 };
-if (window.location.pathname === "/") {
+if (window.location.pathname === "/" && !isDevelopmentMode) {
   let timer = setInterval(() => {
     console.log("checking pathname");
     if (
