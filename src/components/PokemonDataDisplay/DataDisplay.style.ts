@@ -6,6 +6,7 @@ export const PropertyDisplay = styled.div`
   padding-bottom: 10px;
   flex-wrap: wrap;
   align-items: center;
+  padding-left: 1.8rem;
 `;
 export const HiddenPropertyText = styled.div`
   display: none;
@@ -41,11 +42,18 @@ export const PokemonName = styled.a`
   grid-row: 3;
   grid-column: 1/2;
   font-size: 1.8rem;
+  max-width: 11rem;
+  overflow: hidden;
 `;
 export const PropertiesContainer = styled.div`
   grid-row: 4;
   grid-column: 2/4;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+`;
+export const HeaderContainer = styled.div`
+  grid-area: 3/1;
+  display: flex;
   justify-content: space-between;
 `;
