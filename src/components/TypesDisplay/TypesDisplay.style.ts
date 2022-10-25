@@ -13,6 +13,7 @@ export const TypeContainer = styled.div`
   align-self: center;
   justify-self: end;
   height: 100%;
+  padding: 0 1.2rem;
 `;
 
 export const Type = styled(TypeColoredComponent)`
