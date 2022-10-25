@@ -1,11 +1,11 @@
-///<reference types="chrome"/>
-import logo from "./logo.svg";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./App.css";
-import React, { useEffect, useState } from "react";
 import { TypeWriterContainer } from "./TypeWriterContainer.style";
 import { AppDisplay, Button } from "./App.styles";
 import { TeamDisplay } from "./components/TeamDisplay/TeamDisplay";
 import { isDevelopmentMode } from "./functions";
+import useResizeObserver from "use-resize-observer";
+
 interface MoveResponse {
   move: string;
   type: string;
@@ -35,10 +35,26 @@ export const getMoveData = (data: string[] | null) => {
   }
   return dataSet;
 };
-
+const displayCutOff = 600;
 function App() {
   const [opponentsTeam, setOpponentsTeam] = useState<boolean>(true);
   const [team, setTeam] = useState();
+  const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
+  const { ref, width, height } = useResizeObserver<HTMLDivElement>({
+    onResize: ({ width, height }) => {
+      console.log("onResize", width, height);
+      if (!width || !height) {
+        return;
+      }
+      if (width < displayCutOff && !changeDisplay) {
+        setChangeDisplay(true);
+      }
+      if (width > displayCutOff && changeDisplay) {
+        setChangeDisplay(false);
+      }
+    },
+  });
+
   console.log("hello from extension");
   const [randomBattle, setRandomBattle] = useState<string | false>(
     isDevelopmentMode ? "gen8randomdoublesbattle" : false
@@ -46,16 +62,17 @@ function App() {
   useEffect(() => {
     const path = window.location.pathname;
     console.log(path);
-    if (path.includes("randombattle")) {
+    if (path.includes("random")) {
       const match = path.match(/(?<=\-).+?(?=\-)/);
       if (match && match[0]) {
         setRandomBattle(match[0]);
       }
     }
   }, []);
+
   console.log("randomBattle", randomBattle);
   return (
-    <AppDisplay>
+    <AppDisplay changeDisplay={changeDisplay} ref={ref}>
       <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>
         Swap to {opponentsTeam ? "Users Team" : "Opponents Team"}
       </Button>
