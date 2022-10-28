@@ -12,6 +12,7 @@ import {
 } from "./TeamDisplay.functions";
 import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
+import { isDevelopmentMode } from "../../functions";
 interface TeamProps {
   isRandomBattle: isRandomBattleReturn;
   opponentsTeam: boolean;
@@ -83,7 +84,39 @@ export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
   //     setDisplayedPokemon(selectedPokemon);
   //   }
   // }, [selectedPokemon, activePokemon]);
+  if (isDevelopmentMode) {
+    const testTeam = [
+      "jolteon",
+      "espeon",
+      "umbreon",
+      "vaporeon",
+      "leafeon",
+      "flareon",
+    ];
+    return (
+      <>
+        <ButtonDisplay>
+          {testTeam.map((x, idx) => (
+            <Button
+              key={pokemonNameFilter(x) + idx}
+              onClick={() => {
+                setDisplayedPokemon(getPokemonName(x));
+              }}
+            >
+              <SpriteImage name={pokemonNameFilter(x)} />
+            </Button>
+          ))}
+        </ButtonDisplay>
 
+        {displayedPokemon ? (
+          <PokemonDataDisplay
+            pokemon={displayedPokemon}
+            isRandomBattle={isRandomBattle}
+          />
+        ) : null}
+      </>
+    );
+  }
   return !teams ? (
     <ButtonDisplay>
       <SpriteImage name={pokemonNameFilter("")} />
@@ -100,6 +133,7 @@ export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
           <Button
             key={pokemonNameFilter(x) + idx}
             onClick={() => {
+              console.log("pokemon clicked", x);
               setDisplayedPokemon(getPokemonName(x));
             }}
           >
