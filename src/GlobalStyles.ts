@@ -1,12 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
-@font-face {
-    font-family: "VT323";
-    font-weight: 400;
-    font-style: normal;
-    src: url("fonts/VT323-Regular.woff2") format("woff2"),
-    url("fonts/VT323-Regular.woff") format("woff");
-  }
+
 html {
   font-size: 20px;
 }
@@ -19,7 +13,8 @@ button {
   font-family: inherit;
 }
 #react-root {
-  font-family: 'VT323', monospace;
+  font-family: inherit;
+
   font-size: 1rem;
   }
 #react {
@@ -35,7 +30,6 @@ button {
 
 }
 h1 {
-  font-family: var(--font-family);
   font-size:2.7rem;
 }
 `;
