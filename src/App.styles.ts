@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { PropertyDisplay } from "./components/PokemonDataDisplay/DataDisplay.style";
 export const RefreshButton = styled.button`
@@ -29,8 +30,7 @@ export const Button = styled.button`
   background-color: rgb(237, 85, 100);
   align-self: center;
 `;
-interface RefProp {
-  ref?: React.RefObject<HTMLDivElement>;
+interface RefProp extends React.FC {
   changeDisplay: boolean;
 }
 export const AppDisplay = styled.div<RefProp>`
