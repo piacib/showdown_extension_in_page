@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { isRandomBattleReturn, isTypeName, TypeName } from "../../types";
 import { dexSearchPrepper } from "../../functions";
 import { RandomBattlePokemonDisplay } from "./RandomBattlePokemonDisplay";
-import { PropertiesContainer, PokemonName } from "./DataDisplay.style";
+import {
+  PropertiesContainer,
+  PokemonName,
+  HeaderContainer,
+} from "./DataDisplay.style";
 import DamageDisplay from "../DamageDisplay/DamageDisplay";
 import TypeDisplay from "../TypesDisplay/TypesDisplay";
 import StatsDisplay from "../StatsDisplay/StatsDisplay";
@@ -36,10 +40,12 @@ export const PokemonDataDisplay = ({
   console.log("isRandomBattle", isRandomBattle);
   return (
     <>
-      <PokemonName href={`https://www.smogon.com/dex/ss/pokemon/${pokemon}/`}>
-        {regExPokemonName ? regExPokemonName[1] : pokemon}
-      </PokemonName>
-      <TypeDisplay types={typesArray} />
+      <HeaderContainer>
+        <PokemonName href={`https://www.smogon.com/dex/ss/pokemon/${pokemon}/`}>
+          {regExPokemonName ? regExPokemonName[1] : pokemon}
+        </PokemonName>
+        <TypeDisplay types={typesArray} />
+      </HeaderContainer>
       <DamageDisplay typesArray={typesArray} />
       <PropertiesContainer>
         {isRandomBattle ? (
