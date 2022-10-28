@@ -31,6 +31,7 @@ export const MoveDescription = styled(MoveProperty)`
 `;
 export const MovesContainer = styled(PropertyDisplay)`
   display: flex;
+  position: relative; 
 `;
 export const MoveType = styled(MoveProperty)<TypeColorInterface>`
   background-color: ${(props) => typeColorConverter[props.background]};
