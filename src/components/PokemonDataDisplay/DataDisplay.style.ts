@@ -6,6 +6,7 @@ export const PropertyDisplay = styled.div`
   padding-bottom: 10px;
   flex-wrap: wrap;
   align-items: center;
+  position: relative;
   padding-left: 1.8rem;
 `;
 export const HiddenPropertyText = styled.div`
@@ -17,7 +18,7 @@ export const HoverDisplay = styled.div`
   margin: 2px;
   border: 2px solid black;
   font-size: 0.8rem;
-  position: relative;
+  /* position: relative; */
   &:hover ${HiddenPropertyText} {
     display: block;
     position: absolute;
@@ -29,8 +30,9 @@ export const HoverDisplay = styled.div`
 `;
 export const PropertyBtn = styled(HoverDisplay)`
   &:hover ${HiddenPropertyText} {
-    top: 30px;
-    right: 0;
+    /* bottom: 2rem; */
+    left: 0;
+    margin-right: 10px;
     max-width: 250px;
     min-width: 150px;
     padding: ${(props) => props.theme.padding.medium};
