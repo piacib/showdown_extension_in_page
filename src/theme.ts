@@ -1,6 +1,9 @@
 import { DefaultTheme } from "styled-components";
 
 const theme: DefaultTheme = {
+  media: {
+    smallScreen: "600px",
+  },
   outerBorderWidth: "5px",
   outerBorderColor: "solid",
   outerBorderStyle: "black",
