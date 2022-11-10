@@ -47,21 +47,7 @@ export const getCurrentPokemon = (
   const activePokemonFilteredName = getPokemonName(activePokemon[0]);
   return activePokemonFilteredName;
 };
-export const testTeam = [
-  "Slowking (fainted)",
-  "Type: Null",
-  "Stoutland (active)",
-  "Lycanroc (Lycanroc-Dusk) (91%)",
-  "Scizor (91%)",
-  "Not revealed",
-  "Aggron",
-  "Indeedee-F",
-  "Regice",
-  "Runerigus",
-  "Landorus-Therian",
-  "Heatmor",
-  "Jirachi",
-];
+
 export const testResults = [
   "Slowking",
   "Type: Null",
@@ -77,3 +63,27 @@ export const testResults = [
   "Heatmor",
   "Jirachi",
 ];
+export const testTeam = [
+  "jolteon",
+  "espeon",
+  "umbreon",
+  "vaporeon",
+  "leafeon",
+  "flareon",
+];
+export const config = { attributes: true, childList: true, subtree: true };
+
+// takes in room id and grabs icon aria labels for teams
+export const getTeam = (roomId: string) => {
+  const battleRoom = document.getElementById(roomId);
+  if (!battleRoom) {
+    return [[], []];
+  }
+  const teamIcons = battleRoom.getElementsByClassName("teamicons");
+  if (!Array.from(teamIcons).filter((x) => x.children.length > 0).length) {
+    return [[], []];
+  }
+  const usersTeam = [...teamIcons[0].children, ...teamIcons[1].children];
+  const opponentsTeam = [...teamIcons[3].children, ...teamIcons[4].children];
+  return [usersTeam, opponentsTeam];
+};
