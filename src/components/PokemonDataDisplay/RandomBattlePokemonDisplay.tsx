@@ -16,11 +16,11 @@ type RandbatsPokemonData = {
 };
 interface RandomBattlePokemonDisplayProps {
   pokemon: string;
-  isRandomBattle: isRandomBattleReturn;
 }
 export const RandomBattlePokemonDisplay: React.FC<
   RandomBattlePokemonDisplayProps
-> = ({ pokemon, isRandomBattle }) => {
+> = ({ pokemon }) => {
+  console.log("rndbattle loading");
   const [pokemonData, setPokemonData] = useState<PokemonData>({
     moves: [],
     abilities: [],
@@ -35,17 +35,22 @@ export const RandomBattlePokemonDisplay: React.FC<
         moves: [],
       },
     });
+
   // fetchs random pokemon data only on startup
   useEffect(() => {
     async function asyncFetchRandomPokemonData() {
+      const regMatch = document.location.pathname.match(/(?<=\-).+?(?=\-)/);
+      const battleType = regMatch ? regMatch[0] : "";
+      console.log("battleType", battleType);
+      console.log(`https://pkmn.github.io/randbats/data/${battleType}.json`);
       const fetchData = await fetch(
-        `https://pkmn.github.io/randbats/data/${isRandomBattle}.json`
+        `https://pkmn.github.io/randbats/data/${battleType}.json`
       );
       const response = await fetchData.json();
       setRandbatsPokemonData(response);
     }
     asyncFetchRandomPokemonData();
-  }, [isRandomBattle]);
+  }, []);
   // sets pokemon data when new pokemon is selected
   useEffect(() => {
     if (randbatsPokemonData[pokemon]) {
@@ -53,6 +58,7 @@ export const RandomBattlePokemonDisplay: React.FC<
       setPokemonData({ abilities: abilities, items: items, moves: moves });
     }
   }, [pokemon, randbatsPokemonData]);
+  console.log("pokemonData", pokemonData);
   const movesData = pokemonData.moves.map(
     (move) => Moves[dexSearchPrepper(move)]
   );
