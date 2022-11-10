@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Dispatch, useCallback, useEffect, useState } from "react";
 import { Button, ButtonDisplay } from "./TeamDisplay.style";
 // import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { isRandomBattleReturn } from "../../types";
@@ -9,114 +9,139 @@ import {
   getCurrentPokemon,
   pokemonNameFilter,
   getPokemonName,
+  config,
+  getTeam,
 } from "./TeamDisplay.functions";
 import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import { isDevelopmentMode } from "../../functions";
-interface TeamProps {
-  isRandomBattle: isRandomBattleReturn;
+import { stringify } from "querystring";
+import { AppProps } from "../../App";
+interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
-const config = { attributes: true, childList: true, subtree: true };
 
+type teamsType = [string[], string[]] | null;
+type setTeamsType = (roomId: string) => void;
+
+const useTeams = (): [teamsType, setTeamsType] => {
+  const [teams, setTeamstemp] = useState<[string[], string[]] | null>(null);
+  const setTeams = (roomId: string, props?: [string[], string[]]) => {
+    console.log("setTeams props", roomId, props);
+    if (props) {
+      setTeamstemp(props);
+      return;
+    }
+    const [usersTeam, opponentsTeam] = getTeam(roomId);
+    if (usersTeam.length === 0 || opponentsTeam.length === 0) {
+      setTeamstemp(null);
+    }
+    setTeamstemp([
+      usersTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
+      opponentsTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
+    ]);
+  };
+  return [teams, setTeams];
+};
 // Callback function to execute when mutations are observed
 // WORKS
 
-const messageLog = document.getElementsByClassName("inner message-log")[0];
-
 //fetches latest pokemon data from auto updating dataset
-export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
-  const [teams, setTeams] = useState<[string[], string[]] | null>(null);
-  // const [activePokemon, setActivePokemon] = useState<string | null>(
-  //   getCurrentPokemon(team)
-  // );
-  // const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
+export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
+  const [teams, setTeams] = useTeams();
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
+  const [messageLogAdded, setMessageLogAdded] = useState<boolean>(false);
+
+  const [battleRoom, setBattleRoom] = useState("");
+  console.log("battleRoom,roomId", battleRoom, roomId);
+  useEffect(() => {
+    if (teams) {
+      console.log("chagning pkmdis");
+      const displayedTeam = teams[Number(opponentsTeam)];
+      setDisplayedPokemon(displayedTeam[0]);
+    }
+  }, [teams, opponentsTeam]);
+  useEffect(() => {
+    window.addEventListener("load", () => {
+      let bodyList = document.querySelector("body");
+      // checks mutations for a different pathname
+      const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          if (battleRoom != document.location.pathname) {
+            console.log(
+              "app mutation, setting battleroom",
+              document.location.pathname
+            );
+            setBattleRoom(document.location.pathname);
+          }
+        });
+      });
+      if (bodyList) {
+        observer.observe(bodyList, config);
+      }
+    });
+  }, []);
+
   const callback = useCallback((mutationList: MutationRecord[]) => {
     for (const mutation of mutationList) {
       if (mutation.type === "childList") {
         if (mutation.addedNodes[0]?.nodeName === "H2") {
-          const teamIcons = document.getElementsByClassName("teamicons");
-          const userTeam = [...teamIcons[0].children, ...teamIcons[1].children];
-          const opponentsTeam = [
-            ...teamIcons[3].children,
-            ...teamIcons[4].children,
-          ];
           console.log(
-            "newturn",
-            userTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
-            opponentsTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel))
+            mutation.addedNodes[0] instanceof HTMLElement
+              ? mutation.addedNodes[0].innerText
+              : "H2"
           );
-          setTeams([
-            userTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
-            opponentsTeam.map((pokemon) =>
-              pokemonNameFilter(pokemon.ariaLabel)
-            ),
-          ]);
+          setTeams(roomId);
         }
       } else if (mutation.type === "attributes") {
         console.log(`The ${mutation.attributeName} attribute was modified.`);
       }
     }
   }, []);
-  useEffect(() => {
-    console.log("messageLog", messageLog);
-    const messageLogObserver = new MutationObserver(callback);
-    messageLogObserver.observe(messageLog, config);
-    return () => messageLogObserver.disconnect();
+  const initialLoadCallback = useCallback((mutationList: MutationRecord[]) => {
+    for (const mutation of mutationList) {
+      const target = mutation.target;
+      if (mutation.target instanceof HTMLDivElement) {
+        mutation.target.className === "inner message-log";
+        setMessageLogAdded(true);
+        console.log("message log found", mutationList);
+      }
+    }
   }, []);
-  // useEffect(() => {
-  //   setActivePokemon(getCurrentPokemon(team));
-  // }, [team]);
-  // // swaps displayed pokemon between selected and active
-  // // such that when active is displayed it will automatically
-  // // chaange if the active pokemon is changed but continues
-  // // displaying the selected pokemon is user selects a
-  // // different pokemon
-  // useEffect(() => {
-  //   if (selectedPokemon === null) {
-  //     if (activePokemon) {
-  //       setDisplayedPokemon(getPokemonName(activePokemon));
-  //     }
-  //   } else if (selectedPokemon === activePokemon) {
-  //     setSelectedPokemon(null);
-  //   } else {
-  //     setDisplayedPokemon(selectedPokemon);
-  //   }
-  // }, [selectedPokemon, activePokemon]);
-  if (isDevelopmentMode) {
-    const testTeam = [
-      "jolteon",
-      "espeon",
-      "umbreon",
-      "vaporeon",
-      "leafeon",
-      "flareon",
-    ];
-    return (
-      <>
-        <ButtonDisplay>
-          {testTeam.map((x, idx) => (
-            <Button
-              key={pokemonNameFilter(x) + idx}
-              onClick={() => {
-                setDisplayedPokemon(getPokemonName(x));
-              }}
-            >
-              <SpriteImage name={pokemonNameFilter(x)} />
-            </Button>
-          ))}
-        </ButtonDisplay>
-
-        {displayedPokemon ? (
-          <PokemonDataDisplay
-            pokemon={displayedPokemon}
-            isRandomBattle={isRandomBattle}
-          />
-        ) : null}
-      </>
-    );
-  }
+  const bodyObserver = new MutationObserver(initialLoadCallback);
+  const battleRoomEl = document.getElementById(roomId);
+  useEffect(() => {
+    if (
+      battleRoomEl &&
+      battleRoomEl.getElementsByClassName("inner message-log")[0] === undefined
+    ) {
+      console.log("adding body observer");
+      bodyObserver.observe(document.body, config);
+    } else {
+      setMessageLogAdded(true);
+    }
+    return () => bodyObserver.disconnect();
+  }, []);
+  useEffect(() => {
+    console.log("messageLogAdded adding turn observer");
+    const messageLogObserver = new MutationObserver(callback);
+    const messageLog =
+      battleRoomEl?.getElementsByClassName("inner message-log")[0];
+    if (messageLogAdded) {
+      console.log(
+        "bodyObserver.disconnect(), setTeams(), messageLogObserver.observe",
+        messageLog
+      );
+      bodyObserver.disconnect();
+      if (messageLog) {
+        console.log("messageLogObserver");
+        setTeams(roomId);
+        messageLogObserver.observe(messageLog, config);
+      }
+    }
+    return () => messageLogObserver.disconnect();
+  }, [messageLogAdded]);
+  console.log(teams, displayedPokemon);
   return !teams ? (
     <ButtonDisplay>
       <SpriteImage name={pokemonNameFilter("")} />
@@ -133,7 +158,7 @@ export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
           <Button
             key={pokemonNameFilter(x) + idx}
             onClick={() => {
-              console.log("pokemon clicked", x);
+              console.log("pokemon clicked", x, getPokemonName(x));
               setDisplayedPokemon(getPokemonName(x));
             }}
           >
@@ -143,19 +168,36 @@ export const TeamDisplay = ({ isRandomBattle, opponentsTeam }: TeamProps) => {
       </ButtonDisplay>
 
       {displayedPokemon ? (
-        <PokemonDataDisplay
-          pokemon={displayedPokemon}
-          isRandomBattle={isRandomBattle}
-        />
+        <PokemonDataDisplay pokemon={displayedPokemon} roomId={roomId} />
       ) : (
         <PokemonUnavailable />
       )}
     </>
   );
 };
-// !team ? (
-// <>
-//   <OpponentsTeamUnavailable />
-// </>;
-// ) : (
-// );
+
+// if (isDevelopmentMode) {
+//   return (
+//     <>
+//       <ButtonDisplay>
+//         {testTeam.map((x, idx) => (
+//           <Button
+//             key={pokemonNameFilter(x) + idx}
+//             onClick={() => {
+//               setDisplayedPokemon(getPokemonName(x));
+//             }}
+//           >
+//             <SpriteImage name={pokemonNameFilter(x)} />
+//           </Button>
+//         ))}
+//       </ButtonDisplay>
+
+//       {displayedPokemon ? (
+//         <PokemonDataDisplay
+//           pokemon={displayedPokemon}
+//           battleRoom={battleRoom}
+//         />
+//       ) : null}
+//     </>
+//   );
+// }
