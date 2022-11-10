@@ -39,11 +39,14 @@ export const PropertyBtn = styled(HoverDisplay)`
     font-size: inherit;
   }
 `;
+const fontSize = 1.8;
 export const PokemonName = styled.a`
   align-self: center;
   grid-row: 3;
   grid-column: 1/2;
-  font-size: 1.8rem;
+  font-size: ${fontSize + "rem"};
+  line-height: ${fontSize + "rem"};
+  height: ${fontSize * 2 + "rem"};
   max-width: 11rem;
   overflow: hidden;
 `;
@@ -54,8 +57,12 @@ export const PropertiesContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-export const HeaderContainer = styled.div`
+interface RefProp extends React.FC {
+  changeDisplay: boolean;
+}
+export const HeaderContainer = styled.div<RefProp>`
   grid-area: 3/1;
   display: flex;
   justify-content: space-between;
+  flex-direction: ${(props) => (props.changeDisplay ? "column" : "row")};
 `;
