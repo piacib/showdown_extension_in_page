@@ -142,16 +142,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     return () => messageLogObserver.disconnect();
   }, [messageLogAdded]);
   console.log(teams, displayedPokemon);
-  return !teams ? (
-    <ButtonDisplay>
-      <SpriteImage name={pokemonNameFilter("")} />
-      <SpriteImage name={pokemonNameFilter("")} />
-      <SpriteImage name={pokemonNameFilter("")} />
-      <SpriteImage name={pokemonNameFilter("")} />
-      <SpriteImage name={pokemonNameFilter("")} />
-      <SpriteImage name={pokemonNameFilter("")} />
-    </ButtonDisplay>
-  ) : (
+  return teams ? (
     <>
       <ButtonDisplay>
         {teams[Number(opponentsTeam)].map((x, idx) => (
@@ -173,31 +164,14 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
         <PokemonUnavailable />
       )}
     </>
+  ) : (
+    <ButtonDisplay>
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+    </ButtonDisplay>
   );
 };
-
-// if (isDevelopmentMode) {
-//   return (
-//     <>
-//       <ButtonDisplay>
-//         {testTeam.map((x, idx) => (
-//           <Button
-//             key={pokemonNameFilter(x) + idx}
-//             onClick={() => {
-//               setDisplayedPokemon(getPokemonName(x));
-//             }}
-//           >
-//             <SpriteImage name={pokemonNameFilter(x)} />
-//           </Button>
-//         ))}
-//       </ButtonDisplay>
-
-//       {displayedPokemon ? (
-//         <PokemonDataDisplay
-//           pokemon={displayedPokemon}
-//           battleRoom={battleRoom}
-//         />
-//       ) : null}
-//     </>
-//   );
-// }
