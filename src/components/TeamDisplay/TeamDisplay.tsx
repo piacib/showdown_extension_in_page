@@ -20,10 +20,11 @@ import { AppProps } from "../../App";
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
-
+/** [usersTeam[''],opponentsTeam['']] | null */
 type teamsType = [string[], string[]] | null;
 type setTeamsType = (roomId: string) => void;
 
+/** teamsType: [usersTeam[''],opponentsTeam['']] | null */
 const useTeams = (): [teamsType, setTeamsType] => {
   const [teams, setTeamstemp] = useState<[string[], string[]] | null>(null);
   const setTeams = (roomId: string, props?: [string[], string[]]) => {
@@ -46,14 +47,15 @@ const useTeams = (): [teamsType, setTeamsType] => {
 // Callback function to execute when mutations are observed
 // WORKS
 
-//fetches latest pokemon data from auto updating dataset
+//fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
+  console.log("inside team dis");
   const [teams, setTeams] = useTeams();
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
   const [messageLogAdded, setMessageLogAdded] = useState<boolean>(false);
 
   const [battleRoom, setBattleRoom] = useState("");
-  console.log("battleRoom,roomId", battleRoom, roomId);
+  console.log("roomId", roomId);
   useEffect(() => {
     if (teams) {
       console.log("chagning pkmdis");
@@ -72,6 +74,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
               "app mutation, setting battleroom",
               document.location.pathname
             );
+            console.log("roomId", roomId);
             setBattleRoom(document.location.pathname);
           }
         });
@@ -82,22 +85,6 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     });
   }, []);
 
-  const callback = useCallback((mutationList: MutationRecord[]) => {
-    for (const mutation of mutationList) {
-      if (mutation.type === "childList") {
-        if (mutation.addedNodes[0]?.nodeName === "H2") {
-          console.log(
-            mutation.addedNodes[0] instanceof HTMLElement
-              ? mutation.addedNodes[0].innerText
-              : "H2"
-          );
-          setTeams(roomId);
-        }
-      } else if (mutation.type === "attributes") {
-        console.log(`The ${mutation.attributeName} attribute was modified.`);
-      }
-    }
-  }, []);
   const initialLoadCallback = useCallback((mutationList: MutationRecord[]) => {
     for (const mutation of mutationList) {
       const target = mutation.target;
@@ -108,12 +95,16 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
       }
     }
   }, []);
-  const bodyObserver = new MutationObserver(initialLoadCallback);
   const battleRoomEl = document.getElementById(roomId);
+  console.log("team", battleRoomEl, roomId);
+  const bodyObserver = new MutationObserver(initialLoadCallback);
+  // checks if battleroom and messagelog are present and if not
+  // adds body observer to see when they're added
+
   useEffect(() => {
     if (
       battleRoomEl &&
-      battleRoomEl.getElementsByClassName("inner message-log")[0] === undefined
+      battleRoomEl?.getElementsByClassName("inner message-log")[0] === undefined
     ) {
       console.log("adding body observer");
       bodyObserver.observe(document.body, config);
@@ -122,11 +113,31 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     }
     return () => bodyObserver.disconnect();
   }, []);
+
+  // if message log added add message log observer
+  // to watch for new turns
+
   useEffect(() => {
-    console.log("messageLogAdded adding turn observer");
-    const messageLogObserver = new MutationObserver(callback);
     const messageLog =
       battleRoomEl?.getElementsByClassName("inner message-log")[0];
+    const callback = (mutationList: MutationRecord[]) => {
+      for (const mutation of mutationList) {
+        if (mutation.type === "childList") {
+          if (mutation.addedNodes[0]?.nodeName === "H2") {
+            console.log(
+              mutation.addedNodes[0] instanceof HTMLElement
+                ? mutation.addedNodes[0].innerText
+                : "H2"
+            );
+            console.log("setting teams");
+            setTeams(roomId);
+          }
+        } else if (mutation.type === "attributes") {
+          console.log(`The ${mutation.attributeName} attribute was modified.`);
+        }
+      }
+    };
+    const messageLogObserver = new MutationObserver(callback);
     if (messageLogAdded) {
       console.log(
         "bodyObserver.disconnect(), setTeams(), messageLogObserver.observe",
