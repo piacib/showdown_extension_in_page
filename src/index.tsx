@@ -25,7 +25,6 @@ const addDisplay = (battleRoom: HTMLElement) => {
   }
   const app = document.createElement("div");
   app.id = appId;
-  console.log("battleRoom", battleRoom);
   const battleLog = battleRoom.getElementsByClassName("battle-log");
   if (battleLog && battleLog[0]) {
     battleLog[0].prepend(app);
@@ -70,12 +69,14 @@ const resetBattleRooms = () => {
     return;
   }
   const battleLi = Array.from(battlesUl.children);
-  const activeBattles: string[] = battleLi.map((li) => {
+  const activeBattles: string[] = [];
+  battleLi.forEach((li) => {
     const anchorEl = li.children[0];
-    if (anchorEl instanceof HTMLAnchorElement) {
-      return getBattleRoomID(anchorEl.href);
-    } else {
-      return "";
+    if (
+      anchorEl instanceof HTMLAnchorElement &&
+      anchorEl.href.includes("battle")
+    ) {
+      activeBattles.push(getBattleRoomID(anchorEl.href));
     }
   });
   activeBattleRooms = activeBattles;
@@ -98,8 +99,7 @@ const checkBattleRooms = (roomId: string) => {
 // // checks for tab changes
 window.addEventListener("load", () => {
   let currentPathname = document.location.pathname;
-  let bodyList = document.querySelector("body");
-
+  let body = document.querySelector("body");
   // checks mutations for a different pathname
   const observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
@@ -116,8 +116,8 @@ window.addEventListener("load", () => {
       }
     });
   });
-  if (bodyList) {
+  if (body) {
     console.log("load observer added");
-    observer.observe(bodyList, config);
+    observer.observe(body, config);
   }
 });
