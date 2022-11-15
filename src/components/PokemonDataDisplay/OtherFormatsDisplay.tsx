@@ -6,9 +6,8 @@ interface OtherFormatsDisplayProps {
 }
 
 const OtherFormatsDisplay = ({ pokemon }: OtherFormatsDisplayProps) => {
-  const abilities = Object.entries(Dex.species.get(pokemon).abilities).map(
-    (x) => x[1]
-  );
+  console.log("OtherFormatsDisplay", pokemon);
+  const abilities = Object.entries(Dex.species.get(pokemon).abilities).map((x) => x[1]);
   return <AbilitiesDisplay abilities={abilities} />;
 };
 
