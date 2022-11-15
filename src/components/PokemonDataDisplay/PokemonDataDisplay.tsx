@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { isRandomBattleReturn, isTypeName, TypeName } from "../../types";
 import { dexSearchPrepper } from "../../functions";
 import { RandomBattlePokemonDisplay } from "./RandomBattlePokemonDisplay";
-import {
-  PropertiesContainer,
-  PokemonName,
-  HeaderContainer,
-} from "./DataDisplay.style";
+import { PropertiesContainer, PokemonName, HeaderContainer } from "./DataDisplay.style";
 import DamageDisplay from "../DamageDisplay/DamageDisplay";
 import TypeDisplay from "../TypesDisplay/TypesDisplay";
 import StatsDisplay from "../StatsDisplay/StatsDisplay";
@@ -20,11 +16,8 @@ interface PokemonDataDisplayProps extends AppProps {
   pokemon: string;
 }
 const displayCutOff = 500;
-export const PokemonDataDisplay = ({
-  pokemon,
-  roomId,
-}: PokemonDataDisplayProps) => {
-  console.log("data dis", pokemon, roomId);
+export const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
+  console.log("PokemonDataDisplay", pokemon, roomId);
   const [typesArray, setTypesArray] = useState<TypeName[] | null>(null);
   const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
   const { ref, width, height } = useResizeObserver<HTMLDivElement>({
@@ -46,11 +39,7 @@ export const PokemonDataDisplay = ({
       let newArr: TypeName[] = [];
       const TypeArr = Species[dexSearchPrepper(pokemon)]?.types;
       if (!TypeArr) {
-        console.error(
-          "error retrieving type",
-          dexSearchPrepper(pokemon),
-          pokemon
-        );
+        console.error("error retrieving type", dexSearchPrepper(pokemon), pokemon);
       }
       TypeArr.forEach((entry) => {
         if (isTypeName(entry)) {
