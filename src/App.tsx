@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import "./App.css";
 import { TypeWriterContainer } from "./TypeWriterContainer.style";
-import { AppDisplay, Button } from "./App.styles";
+import { AppDisplay, Button, BottomBorder } from "./App.styles";
 import { TeamDisplay } from "./components/TeamDisplay/TeamDisplay";
-import { isDevelopmentMode } from "./functions";
 import useResizeObserver from "use-resize-observer";
 const config = {
   childList: true,
@@ -35,15 +34,18 @@ const App: React.FC<AppProps> = ({ roomId }) => {
     },
   });
   return (
-    <AppDisplay changeDisplay={changeDisplay} ref={ref}>
-      <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>
-        Swap to {opponentsTeam ? "User's Team" : "Opponent's Team"}
-      </Button>
-      <TypeWriterContainer>
-        <h1>Poke Info</h1>
-      </TypeWriterContainer>
-      <TeamDisplay roomId={roomId} opponentsTeam={opponentsTeam} />
-    </AppDisplay>
+    <>
+      <AppDisplay changeDisplay={changeDisplay} ref={ref}>
+        <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>
+          Swap to {opponentsTeam ? "User's Team" : "Opponent's Team"}
+        </Button>
+        <TypeWriterContainer>
+          <h1>Poke Info</h1>
+        </TypeWriterContainer>
+        <TeamDisplay roomId={roomId} opponentsTeam={opponentsTeam} />
+      </AppDisplay>
+      <BottomBorder />
+    </>
   );
 };
 
