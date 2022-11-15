@@ -10,52 +10,29 @@ import {
   pokemonNameFilter,
   getPokemonName,
   config,
-  getTeam,
 } from "./TeamDisplay.functions";
 import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
-import { isDevelopmentMode } from "../../functions";
-import { stringify } from "querystring";
+import { isDevelopmentMode, testTeam } from "../../developmentMode";
 import { AppProps } from "../../App";
+import { useTeams } from "./useTeams";
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
-/** [usersTeam[''],opponentsTeam['']] | null */
-type teamsType = [string[], string[]] | null;
-type setTeamsType = (roomId: string) => void;
-
-/** teamsType: [usersTeam[''],opponentsTeam['']] | null */
-const useTeams = (): [teamsType, setTeamsType] => {
-  const [teams, setTeamstemp] = useState<[string[], string[]] | null>(null);
-  const setTeams = (roomId: string, props?: [string[], string[]]) => {
-    console.log("setTeams props", roomId, props);
-    if (props) {
-      setTeamstemp(props);
-      return;
-    }
-    const [usersTeam, opponentsTeam] = getTeam(roomId);
-    if (usersTeam.length === 0 || opponentsTeam.length === 0) {
-      setTeamstemp(null);
-    }
-    setTeamstemp([
-      usersTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
-      opponentsTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
-    ]);
-  };
-  return [teams, setTeams];
-};
-// Callback function to execute when mutations are observed
-// WORKS
-
 //fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
-  console.log("inside team dis");
+  console.log("TeamDisplay", opponentsTeam, roomId);
   const [teams, setTeams] = useTeams();
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
   const [messageLogAdded, setMessageLogAdded] = useState<boolean>(false);
 
   const [battleRoom, setBattleRoom] = useState("");
-  console.log("roomId", roomId);
+  useEffect(() => {
+    if (isDevelopmentMode) {
+      console.log("devmode team");
+      setTeams(roomId, [testTeam, testTeam]);
+    }
+  }, []);
   useEffect(() => {
     if (teams) {
       console.log("chagning pkmdis");
@@ -63,27 +40,29 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
       setDisplayedPokemon(displayedTeam[0]);
     }
   }, [teams, opponentsTeam]);
-  useEffect(() => {
-    window.addEventListener("load", () => {
-      let bodyList = document.querySelector("body");
-      // checks mutations for a different pathname
-      const observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          if (battleRoom != document.location.pathname) {
-            console.log(
-              "app mutation, setting battleroom",
-              document.location.pathname
-            );
-            console.log("roomId", roomId);
-            setBattleRoom(document.location.pathname);
-          }
-        });
-      });
-      if (bodyList) {
-        observer.observe(bodyList, config);
-      }
-    });
-  }, []);
+
+  // relic of an older time
+  // useEffect(() => {
+  //   window.addEventListener("load", () => {
+  //     let bodyList = document.querySelector("body");
+  //     // checks mutations for a different pathname
+  //     const observer = new MutationObserver(function (mutations) {
+  //       mutations.forEach(function (mutation) {
+  //         if (battleRoom != document.location.pathname) {
+  //           console.log(
+  //             "app mutation, setting battleroom",
+  //             document.location.pathname
+  //           );
+  //           console.log("roomId", roomId);
+  //           setBattleRoom(document.location.pathname);
+  //         }
+  //       });
+  //     });
+  //     if (bodyList) {
+  //       observer.observe(bodyList, config);
+  //     }
+  //   });
+  // }, []);
 
   const initialLoadCallback = useCallback((mutationList: MutationRecord[]) => {
     for (const mutation of mutationList) {
@@ -96,7 +75,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     }
   }, []);
   const battleRoomEl = document.getElementById(roomId);
-  console.log("team", battleRoomEl, roomId);
+  console.log("team, battleRoomEl, roomId", battleRoomEl, roomId);
   const bodyObserver = new MutationObserver(initialLoadCallback);
   // checks if battleroom and messagelog are present and if not
   // adds body observer to see when they're added
@@ -118,31 +97,17 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   // to watch for new turns
 
   useEffect(() => {
-    const messageLog =
-      battleRoomEl?.getElementsByClassName("inner message-log")[0];
+    const messageLog = battleRoomEl?.getElementsByClassName("inner message-log")[0];
     const callback = (mutationList: MutationRecord[]) => {
       for (const mutation of mutationList) {
-        if (mutation.type === "childList") {
-          if (mutation.addedNodes[0]?.nodeName === "H2") {
-            console.log(
-              mutation.addedNodes[0] instanceof HTMLElement
-                ? mutation.addedNodes[0].innerText
-                : "H2"
-            );
-            console.log("setting teams");
-            setTeams(roomId);
-          }
-        } else if (mutation.type === "attributes") {
-          console.log(`The ${mutation.attributeName} attribute was modified.`);
+        if (mutation.type === "childList" && mutation.addedNodes[0]?.nodeName === "H2") {
+          setTeams(roomId);
         }
       }
     };
     const messageLogObserver = new MutationObserver(callback);
     if (messageLogAdded) {
-      console.log(
-        "bodyObserver.disconnect(), setTeams(), messageLogObserver.observe",
-        messageLog
-      );
+      console.log("bodyObserver.disconnect(), setTeams(), messageLogObserver.observe", messageLog);
       bodyObserver.disconnect();
       if (messageLog) {
         console.log("messageLogObserver");
@@ -152,7 +117,8 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     }
     return () => messageLogObserver.disconnect();
   }, [messageLogAdded]);
-  console.log(teams, displayedPokemon);
+
+  console.log("teams", teams, displayedPokemon);
   return teams ? (
     <>
       <ButtonDisplay>
