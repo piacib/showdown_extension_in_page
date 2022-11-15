@@ -24,6 +24,7 @@ export const TypeWriterContainer = styled.div`
   grid-column: 1/2;
   margin: auto;
   * {
+    font-family: "VT323";
     height: 1em;
     width: fit-content;
     overflow: hidden; /* Ensures the content is not revealed until the animation */
@@ -31,7 +32,6 @@ export const TypeWriterContainer = styled.div`
     white-space: nowrap; /* Keeps the content on a single line */
     margin: 0.5rem auto; /* Gives that scrolling effect as the typing happens */
     /* letter-spacing: 0.15em; Adjust as needed */
-    animation: ${typing} 3.5s steps(40, end),
-      ${blinkCaret} 1.5s step-end infinite;
+    animation: ${typing} 3.5s steps(40, end), ${blinkCaret} 1.5s step-end infinite;
   }
 `;
