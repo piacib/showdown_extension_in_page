@@ -10,10 +10,7 @@ export const pokemonNameFilter = (name: string | null): string => {
   );
   let activePokemonName = activePokemon ? activePokemon[0] : name;
   if (activePokemonName[activePokemonName.length - 1] === " ") {
-    activePokemonName = activePokemonName.slice(
-      0,
-      activePokemonName.length - 1
-    );
+    activePokemonName = activePokemonName.slice(0, activePokemonName.length - 1);
   }
   const regex = new RegExp(`(${activePokemonName}.*){2}`);
   if (parenthesis) {
@@ -22,7 +19,7 @@ export const pokemonNameFilter = (name: string | null): string => {
     }
   }
 
-  return activePokemonName;
+  return activePokemonName[0].toUpperCase() + activePokemonName.slice(1);
 };
 // converts string to just pokemon name for the button component
 //  by pulling out first word
@@ -34,9 +31,7 @@ export const getPokemonName = (nameStr: string): null | string => {
   const activePokemonName = pokemonNameFilter(nameStr);
   return activePokemonName;
 };
-export const getCurrentPokemon = (
-  opponentsTeam: string[] | null
-): null | string => {
+export const getCurrentPokemon = (opponentsTeam: string[] | null): null | string => {
   if (!opponentsTeam || !opponentsTeam.length) {
     return null;
   }
@@ -63,14 +58,7 @@ export const testResults = [
   "Heatmor",
   "Jirachi",
 ];
-export const testTeam = [
-  "jolteon",
-  "espeon",
-  "umbreon",
-  "vaporeon",
-  "leafeon",
-  "flareon",
-];
+
 export const config = { attributes: true, childList: true, subtree: true };
 
 // takes in room id and grabs icon aria labels for teams
