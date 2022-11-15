@@ -5,7 +5,38 @@ import { dexSearchPrepper } from "../../functions";
 import ItemsDisplay from "../ItemsDisplay/ItemsDisplay";
 import MovesDisplay from "../MovesDisplay/MovesDisplay";
 import AbilitiesDisplay from "../AbilitiesDisplay/AbilitiesDisplay";
+import { devPathname, isDevelopmentMode } from "../../developmentMode";
 const { Moves } = Dex.data;
+const useRandomBattleData = (): [
+  RandbatsPokemonData,
+  React.Dispatch<React.SetStateAction<RandbatsPokemonData>>
+] => {
+  const [randbatsPokemonData, setRandbatsPokemonData] = useState<RandbatsPokemonData>({
+    "": {
+      level: 0,
+      abilities: [],
+      items: [],
+      moves: [],
+    },
+  });
+  // fetchs random pokemon data only on startup
+  useEffect(() => {
+    async function asyncFetchRandomPokemonData() {
+      const pathname = !isDevelopmentMode ? document.location.pathname : devPathname;
+      const regMatch = pathname.match(/(?<=\-).+?(?=\-)/);
+      const battleType = regMatch ? regMatch[0] : "";
+      console.log("battleType", battleType);
+      console.log(`https://pkmn.github.io/randbats/data/${battleType}.json`);
+      const fetchData = await fetch(`https://pkmn.github.io/randbats/data/${battleType}.json`);
+      const response = await fetchData.json();
+      setRandbatsPokemonData(response);
+    }
+    asyncFetchRandomPokemonData();
+  }, []);
+  // sets pokemon data when new pokemon is selected
+  return [randbatsPokemonData, setRandbatsPokemonData];
+};
+
 type RandbatsPokemonData = {
   [key: string]: {
     level: Number;
@@ -17,56 +48,25 @@ type RandbatsPokemonData = {
 interface RandomBattlePokemonDisplayProps {
   pokemon: string;
 }
-export const RandomBattlePokemonDisplay: React.FC<
-  RandomBattlePokemonDisplayProps
-> = ({ pokemon }) => {
-  console.log("rndbattle loading");
-  const [pokemonData, setPokemonData] = useState<PokemonData>({
-    moves: [],
-    abilities: [],
-    items: [],
-  });
-  const [randbatsPokemonData, setRandbatsPokemonData] =
-    useState<RandbatsPokemonData>({
-      "": {
-        level: 0,
-        abilities: [],
-        items: [],
-        moves: [],
-      },
-    });
-
-  // fetchs random pokemon data only on startup
-  useEffect(() => {
-    async function asyncFetchRandomPokemonData() {
-      const regMatch = document.location.pathname.match(/(?<=\-).+?(?=\-)/);
-      const battleType = regMatch ? regMatch[0] : "";
-      console.log("battleType", battleType);
-      console.log(`https://pkmn.github.io/randbats/data/${battleType}.json`);
-      const fetchData = await fetch(
-        `https://pkmn.github.io/randbats/data/${battleType}.json`
-      );
-      const response = await fetchData.json();
-      setRandbatsPokemonData(response);
-    }
-    asyncFetchRandomPokemonData();
-  }, []);
-  // sets pokemon data when new pokemon is selected
-  useEffect(() => {
-    if (randbatsPokemonData[pokemon]) {
-      const { abilities, items, moves } = randbatsPokemonData[pokemon];
-      setPokemonData({ abilities: abilities, items: items, moves: moves });
-    }
-  }, [pokemon, randbatsPokemonData]);
-  console.log("pokemonData", pokemonData);
-  const movesData = pokemonData.moves.map(
+export const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
+  pokemon,
+}) => {
+  console.log("rndbattle loading", pokemon);
+  const [randbatsPokemonData, setRandbatsPokemonData] = useRandomBattleData();
+  const pokemonName = pokemon[0].toUpperCase() + pokemon.slice(1);
+  if (Object.keys(randbatsPokemonData).length > 1 && !randbatsPokemonData[pokemonName]) {
+    console.error("no data for this pokemon", randbatsPokemonData, pokemonName, pokemon);
+  }
+  const movesData = randbatsPokemonData[pokemonName]?.moves.map(
     (move) => Moves[dexSearchPrepper(move)]
   );
-  return (
+  return randbatsPokemonData[pokemonName] ? (
     <>
-      <AbilitiesDisplay abilities={pokemonData.abilities} />
-      <ItemsDisplay items={pokemonData.items} />
+      <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
+      <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
       <MovesDisplay moves={movesData} />
     </>
+  ) : (
+    <></>
   );
 };
