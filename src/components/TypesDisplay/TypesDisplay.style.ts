@@ -6,7 +6,8 @@ const TypeColoredComponent = styled.div<TypeColorInterface>`
 `;
 
 export const Type = styled(TypeColoredComponent)`
-  padding: 0 15px;
+  padding: 0.2rem 1rem;
+  height: fit-content;
   border-radius: 20px;
   display: flex;
   align-items: center;
