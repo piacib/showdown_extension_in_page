@@ -3,9 +3,23 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { theme } from "./theme";
 import { ThemeProvider } from "styled-components";
-import { GlobalStyle } from "./GlobalStyles";
-import { isDevelopmentMode } from "./functions";
+
 import "./locationChange.js";
+import { devRoomId, isDevelopmentMode } from "./developmentMode";
+import FontStyles from "./FontStyles";
+console.log("isDevelopmentMode", isDevelopmentMode);
+if (isDevelopmentMode) {
+  const root = createRoot(document.body as HTMLElement);
+  console.log("root", root);
+  root.render(
+    <React.StrictMode>
+      <FontStyles />
+      <ThemeProvider theme={theme}>
+        <App roomId={devRoomId} />
+      </ThemeProvider>
+    </React.StrictMode>
+  );
+}
 const addDisplay = (battleRoom: HTMLElement) => {
   console.log("adding display", battleRoom);
   if (!battleRoom) {
@@ -34,7 +48,7 @@ const addDisplay = (battleRoom: HTMLElement) => {
   const root = createRoot(container!);
   root.render(
     <>
-      <GlobalStyle theme={theme} />
+      <FontStyles />
       <ThemeProvider theme={theme}>
         <App roomId={battleRoom.id} />
       </ThemeProvider>
@@ -57,9 +71,7 @@ const getBattleRoomID = (pathname: string) => {
 let activeBattleRooms: string[] = [];
 const resetBattleRooms = () => {
   console.log("resetting");
-  const innerUlQuery = document.querySelector(
-    "#header > div.tabbar.maintabbar > div"
-  );
+  const innerUlQuery = document.querySelector("#header > div.tabbar.maintabbar > div");
   if (innerUlQuery?.childElementCount === 2) {
     // no active battles exist and array should be cleared
     activeBattleRooms = [];
@@ -72,10 +84,7 @@ const resetBattleRooms = () => {
   const activeBattles: string[] = [];
   battleLi.forEach((li) => {
     const anchorEl = li.children[0];
-    if (
-      anchorEl instanceof HTMLAnchorElement &&
-      anchorEl.href.includes("battle")
-    ) {
+    if (anchorEl instanceof HTMLAnchorElement && anchorEl.href.includes("battle")) {
       activeBattles.push(getBattleRoomID(anchorEl.href));
     }
   });
@@ -87,9 +96,7 @@ const checkBattleRooms = (roomId: string) => {
     return false;
   }
   activeBattleRooms.push(roomId);
-  const battleRoom = document.getElementById(
-    "room-" + document.location.pathname.slice(1)
-  );
+  const battleRoom = document.getElementById("room-" + document.location.pathname.slice(1));
   if (battleRoom) {
     addDisplay(battleRoom);
   }
