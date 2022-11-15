@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  DamageContainer,
-  DamageGroupContainer,
-  TypeBox,
-  TypeBoxContainer,
-} from "./DamageDisplay.styles";
+import { DamageContainer } from "./DamageDisplay.styles";
 import { damageCalculator } from "../../functions/damageFunctions";
 import { LoadingScreen } from "../LoadingScreen";
 import { TypeName, TypeNamesArr } from "../../types";
+import EffectivnessDisplay from "../EffectivnessDisplay/EffectivnessDisplay";
 
 type DamageObj = {
   [Type in TypeName]: number;
@@ -31,35 +27,11 @@ type DamageObj = {
   // Water: number;
 };
 
-interface EffectivnessProps {
-  damage: "0" | "1/4" | "1/2" | "2" | "4";
-  effectivenessArray: TypeName[];
-}
-const EffectivnessDisplay: React.FC<EffectivnessProps> = ({
-  damage,
-  effectivenessArray,
-}) => {
-  return (
-    <DamageGroupContainer>
-      {effectivenessArray.length ? (
-        <>
-          <TypeBoxContainer>
-            x{damage}:
-            {effectivenessArray.map((x) => (
-              <TypeBox key={x} background={x}>
-                {x}
-              </TypeBox>
-            ))}
-          </TypeBoxContainer>
-        </>
-      ) : null}
-    </DamageGroupContainer>
-  );
-};
 interface DamageDisplayProps {
   typesArray: TypeName[] | null;
 }
 const DamageDisplay: React.FC<DamageDisplayProps> = ({ typesArray }) => {
+  console.log("DamageDisplay", typesArray);
   const [damageObj, setDamageObj] = useState<DamageObj | null>(null);
   useEffect(() => {
     if (typesArray) {
@@ -105,8 +77,8 @@ const DamageDisplay: React.FC<DamageDisplayProps> = ({ typesArray }) => {
   return (
     <DamageContainer>
       <EffectivnessDisplay damage={"0"} effectivenessArray={effect[0]} />
-      <EffectivnessDisplay damage={"1/4"} effectivenessArray={effect[0.25]} />
-      <EffectivnessDisplay damage={"1/2"} effectivenessArray={effect[0.5]} />
+      <EffectivnessDisplay damage={"¼"} effectivenessArray={effect[0.25]} />
+      <EffectivnessDisplay damage={"½"} effectivenessArray={effect[0.5]} />
       <EffectivnessDisplay damage={"2"} effectivenessArray={effect[2]} />
       <EffectivnessDisplay damage={"4"} effectivenessArray={effect[4]} />
     </DamageContainer>
