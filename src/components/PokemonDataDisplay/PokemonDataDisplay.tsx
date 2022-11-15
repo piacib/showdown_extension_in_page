@@ -15,7 +15,7 @@ const { Species } = Dex.data;
 interface PokemonDataDisplayProps extends AppProps {
   pokemon: string;
 }
-const displayCutOff = 500;
+const displayCutOff = 300;
 export const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
   console.log("PokemonDataDisplay", pokemon, roomId);
   const [typesArray, setTypesArray] = useState<TypeName[] | null>(null);
