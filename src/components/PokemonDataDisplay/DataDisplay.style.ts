@@ -43,6 +43,7 @@ const fontSize = 1.8;
 export const PokemonName = styled.a`
   align-self: center;
   grid-row: 3;
+  text-transform: capitalize;
   grid-column: 1/2;
   font-size: ${fontSize + "rem"};
   line-height: ${fontSize + "rem"};
