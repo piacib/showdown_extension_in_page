@@ -24,9 +24,9 @@ export const TypeContainer = styled.div<Props>`
   height: 100%;
   padding: 0 1.2rem;
   ${Type}:first-child {
-    border: ${(props) => (props.types === 2 ? "1rem 0 0 1rem" : "1rem")};
+    border-radius: ${(props) => (props.types === 2 ? "1rem 0 0 1rem" : "1rem")};
   }
   ${Type}:nth-child(2) {
-    border: 0 1rem 1rem 0;
+    border-radius: 0 1rem 1rem 0;
   }
 `;

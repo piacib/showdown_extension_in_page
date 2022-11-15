@@ -6,11 +6,12 @@ interface TypesDisplayProps {
   types: TypeName[] | null;
 }
 const TypesDisplay: React.FC<TypesDisplayProps> = ({ types }) => {
+  console.log("TypesDisplay", types);
   if (!types) {
     return <></>;
   }
   return (
-    <TypeContainer>
+    <TypeContainer types={types.length}>
       {types.map((x) => (
         <Type key={x} background={x}>
           {x}
