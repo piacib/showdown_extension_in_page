@@ -1,5 +1,4 @@
 import { isRandomBattleReturn } from "./types";
-export const isDevelopmentMode = process.env.NODE_ENV === "development";
 const randomDataBattleTypes = [
   "gen8randombattle",
   "gen8randomdoublesbattle",
