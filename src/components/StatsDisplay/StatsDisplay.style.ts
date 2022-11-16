@@ -3,22 +3,18 @@ export const StatsContainer = styled.div`
   grid-row: 2/4;
   grid-column: 2/4;
   max-width: 18rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  background: #e0e7ea;
+  border: 1px solid #aaa;
   font-size: 1.2em;
-  padding-left: 1.8rem;
+  padding: 0.2rem;
   div {
     display: flex;
     flex-direction: row;
-    /* @media screen {
-      max-width: ${(props) => props.theme.media.smallScreen};
-    }
-     {
-      flex-direction: column;
-    }*/
+    align-items: center;
   }
 `;
 export const StatBox = styled.div`
