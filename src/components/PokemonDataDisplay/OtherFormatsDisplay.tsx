@@ -1,3 +1,4 @@
+import React from "react";
 import { Dex } from "@pkmn/dex";
 import AbilitiesDisplay from "../AbilitiesDisplay/AbilitiesDisplay";
 
