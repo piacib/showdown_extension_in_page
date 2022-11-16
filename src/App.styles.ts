@@ -43,7 +43,7 @@ export const AppDisplay = styled.div<RefProp>`
   flex-direction: column;
 `;
 export const BottomBorder = styled.div`
-  margin: 0 -8px 6px;
+  margin: 6px 0;
   padding: 4px 8px;
   border: 1px solid #aaa;
   background: #e0e7ea;
