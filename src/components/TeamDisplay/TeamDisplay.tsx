@@ -16,6 +16,7 @@ import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import { isDevelopmentMode, testTeam } from "../../developmentMode";
 import { AppProps } from "../../App";
 import { useTeams } from "./useTeams";
+import { isRandomBattle } from "../../functions";
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
@@ -34,7 +35,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     }
   }, []);
   useEffect(() => {
-    if (teams) {
+    if (teams && !displayedPokemon) {
       console.log("chagning pkmdis");
       const displayedTeam = teams[Number(opponentsTeam)];
       setDisplayedPokemon(displayedTeam[0]);
@@ -113,13 +114,16 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
         console.log("messageLogObserver");
         setTeams(roomId);
         messageLogObserver.observe(messageLog, config);
+        if (!isRandomBattle(roomId)) {
+          setTeams(roomId);
+        }
       }
     }
     return () => messageLogObserver.disconnect();
   }, [messageLogAdded]);
 
   console.log("teams", teams, displayedPokemon);
-  return teams ? (
+  return teams && teams[0] ? (
     <>
       <ButtonDisplay>
         {teams[Number(opponentsTeam)].map((x, idx) => (
