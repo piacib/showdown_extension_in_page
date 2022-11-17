@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { getTeam, pokemonNameFilter } from "./TeamDisplay.functions";
-
 /** [usersTeam[''],opponentsTeam['']] | null */
-type teamsType = [string[], string[]] | null;
+type teamsType = [string[], string[]];
 type setTeamsType = (roomId: string, props?: [string[], string[]]) => void;
 
+const notRevealedTeam: teamsType = [
+  ["Not revealed", "Not revealed", "Not revealed", "Not revealed", "Not revealed", "Not revealed"],
+  ["Not revealed", "Not revealed", "Not revealed", "Not revealed", "Not revealed", "Not revealed"],
+];
 /** teamsType: [usersTeam[''],opponentsTeam['']] | null */
 export const useTeams = (): [teamsType, setTeamsType] => {
-  const [teams, setTeamstemp] = useState<[string[], string[]] | null>(null);
+  const [teams, setTeamstemp] = useState<teamsType>(notRevealedTeam);
   const setTeams = (roomId: string, props?: [string[], string[]]) => {
     console.log("setTeams props", roomId, props);
     if (props) {
@@ -16,7 +19,7 @@ export const useTeams = (): [teamsType, setTeamsType] => {
     }
     const [usersTeam, opponentsTeam] = getTeam(roomId);
     if (usersTeam.length === 0 || opponentsTeam.length === 0) {
-      setTeamstemp(null);
+      setTeamstemp(notRevealedTeam);
     }
     setTeamstemp([
       usersTeam.map((pokemon) => pokemonNameFilter(pokemon.ariaLabel)),
