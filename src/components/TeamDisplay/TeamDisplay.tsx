@@ -27,18 +27,20 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
   const [messageLogAdded, setMessageLogAdded] = useState<boolean>(false);
 
-  const [battleRoom, setBattleRoom] = useState("");
   useEffect(() => {
     if (isDevelopmentMode) {
       console.log("devmode team");
-      setTeams(roomId, [testTeam, testTeam]);
+      setTeams(roomId, testTeam);
     }
   }, []);
+
   useEffect(() => {
-    if (teams && !displayedPokemon) {
-      console.log("chagning pkmdis");
+    if (teams) {
       const displayedTeam = teams[Number(opponentsTeam)];
-      setDisplayedPokemon(displayedTeam[0]);
+      if (!displayedPokemon || !displayedTeam.includes(displayedPokemon)) {
+        console.log("chagning pkmdis");
+        setDisplayedPokemon(displayedTeam[0]);
+      }
     }
   }, [teams, opponentsTeam]);
 
@@ -131,8 +133,10 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
             key={pokemonNameFilter(x) + idx}
             onClick={() => {
               console.log("pokemon clicked", x, getPokemonName(x));
+
               setDisplayedPokemon(getPokemonName(x));
             }}
+            disabled={x === "Not revealed"}
           >
             <SpriteImage name={pokemonNameFilter(x)} />
           </Button>

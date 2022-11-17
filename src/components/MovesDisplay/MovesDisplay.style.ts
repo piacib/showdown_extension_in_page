@@ -1,19 +1,21 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { TypeColorInterface } from "../../types";
 import { typeColorConverter } from "../PokemonDataDisplay/pokemonTypeColorConverter";
 import {
   HiddenPropertyText,
-  HoverDisplay,
+  hoverDisplayCss,
   PropertyDisplay,
 } from "../PokemonDataDisplay/DataDisplay.style";
+import { TypeColoredComponent } from "../EffectivnessDisplay/EffectivnessDisplay.style";
 
-export const MoveBtn = styled(HoverDisplay)`
+export const MoveBtn = styled(TypeColoredComponent)`
+  ${hoverDisplayCss}
   &:hover ${HiddenPropertyText} {
-    bottom: 30px;
-    right: 0;
+    left: 0;
     min-width: 170px;
     padding: ${(props) => props.theme.padding.medium};
     font-size: 1.1rem;
+    margin: 5px 0;
   }
 `;
 export const MoveInfo = styled.ul`
@@ -22,19 +24,24 @@ export const MoveInfo = styled.ul`
   padding: 0;
   margin: 0;
 `;
-export const MoveProperty = styled.li`
-  /* width: fit-content; */
+const cssMoveProperty = css`
   white-space: nowrap;
+`;
+export const MoveProperty = styled.li`
+  ${cssMoveProperty}
 `;
 export const MoveDescription = styled(MoveProperty)`
   white-space: initial;
 `;
 export const MovesContainer = styled(PropertyDisplay)`
   display: flex;
-  position: relative; 
+  position: relative;
 `;
-export const MoveType = styled(MoveProperty)<TypeColorInterface>`
+export const TypeColorBackground = css<TypeColorInterface>`
   background-color: ${(props) => typeColorConverter[props.background]};
+`;
+export const MoveType = styled(MoveProperty)`
+  ${TypeColorBackground}
   padding: ${(props) => props.theme.padding.small};
   /* ${(props) => props.theme.padding.medium}; */
   width: fit-content;

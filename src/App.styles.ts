@@ -34,12 +34,10 @@ interface RefProp extends React.FC {
   changeDisplay: boolean;
 }
 export const AppDisplay = styled.div<RefProp>`
-  width: 100%;
   min-width: 100px;
   padding: 36px 8px 0;
   display: ${(props) => (props.changeDisplay ? "flex" : "grid")};
   min-height: 250px;
-  height: 30%;
   flex-direction: column;
 `;
 export const BottomBorder = styled.div`

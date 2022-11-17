@@ -14,11 +14,12 @@ interface MovesDisplayProps {
   moves: MoveData[];
 }
 const MovesDisplay: React.FC<MovesDisplayProps> = ({ moves }) => {
+  console.log(moves);
   return (
     <MovesContainer>
       Moves:
       {moves.map((move) => (
-        <MoveBtn key={move.name}>
+        <MoveBtn background={move.type} key={move.name}>
           {move.name}
           <HiddenPropertyText>
             <MoveInfo>
@@ -27,12 +28,8 @@ const MovesDisplay: React.FC<MovesDisplayProps> = ({ moves }) => {
               {typeof move.accuracy === "number" && (
                 <MoveProperty>Accuracy: {move.accuracy}%</MoveProperty>
               )}
-              {Boolean(move.priority) && (
-                <MoveProperty>Priority: {move.priority}</MoveProperty>
-              )}
-              {Boolean(move.basePower) && (
-                <MoveProperty>Power: {move.basePower}</MoveProperty>
-              )}
+              {Boolean(move.priority) && <MoveProperty>Priority: {move.priority}</MoveProperty>}
+              {Boolean(move.basePower) && <MoveProperty>Power: {move.basePower}</MoveProperty>}
               <MoveProperty>Category: {move.category}</MoveProperty>
             </MoveInfo>
           </HiddenPropertyText>

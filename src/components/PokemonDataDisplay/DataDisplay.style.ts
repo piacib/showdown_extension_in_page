@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 export const PropertyDisplay = styled.div`
   height: fit-content;
   display: flex;
@@ -7,12 +7,12 @@ export const PropertyDisplay = styled.div`
   flex-wrap: wrap;
   align-items: center;
   position: relative;
-  padding-left: 1.8rem;
+  /* padding-left: 1.8rem; */
 `;
 export const HiddenPropertyText = styled.div`
   display: none;
 `;
-export const HoverDisplay = styled.div`
+export const hoverDisplayCss = css`
   padding: ${(props) => props.theme.padding.medium};
   text-align: center;
   margin: 2px;
@@ -27,6 +27,9 @@ export const HoverDisplay = styled.div`
     z-index: 2;
     border: 1px solid black;
   }
+`;
+export const HoverDisplay = styled.div`
+  ${hoverDisplayCss}
 `;
 export const PropertyBtn = styled(HoverDisplay)`
   &:hover ${HiddenPropertyText} {
@@ -50,6 +53,7 @@ export const PokemonName = styled.a`
   overflow: hidden;
 `;
 export const PropertiesContainer = styled.div`
+  margin: 5px 0 0 0;
   grid-row: 4;
   grid-column: 2/4;
   display: flex;
