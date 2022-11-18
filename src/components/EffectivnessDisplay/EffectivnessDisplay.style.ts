@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import { typeColorConverter } from "../PokemonDataDisplay/pokemonTypeColorConverter";
-import { TypeColorInterface } from "../../types";
-
-export const TypeColoredComponent = styled.div<TypeColorInterface>`
-  background-color: ${(props) => typeColorConverter[props.background]};
-`;
+import { PillDesign, TypeColoredComponent } from "../../App.style";
 
 export const DamageGroupContainer = styled.div`
   display: flex;
@@ -13,10 +8,11 @@ export const DamageGroupContainer = styled.div`
   flex-wrap: wrap;
 `;
 export const TypeBox = styled(TypeColoredComponent)`
-  margin: 5px;
+  ${PillDesign}
+  /* margin: 5px;
 
   padding: ${(props) => props.theme.padding.small} ${(props) => props.theme.padding.medium};
-  border-radius: 10px;
+  border-radius: 10px; */
   display: flex;
   align-items: center;
 `;
