@@ -20,7 +20,7 @@ const MovesDisplay: React.FC<MovesDisplayProps> = ({ moves }) => {
       Moves:
       {moves.map((move) => (
         <MoveBtn background={move.type} key={move.name}>
-          {move.name}
+          <p>{move.name}</p>
           <HiddenPropertyText>
             <MoveInfo>
               <MoveDescription>{move.shortDesc}</MoveDescription>
