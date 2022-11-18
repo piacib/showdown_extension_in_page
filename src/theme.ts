@@ -36,6 +36,7 @@ const theme: DefaultTheme = {
       Fairy: "rgb(238, 153, 172)",
       "???": "rgb(117, 117, 117)",
     },
+    pokedexRed: "rgb(253,0,1)",
   },
 };
 export { theme };
