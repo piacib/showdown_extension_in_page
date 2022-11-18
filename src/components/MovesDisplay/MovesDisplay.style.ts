@@ -1,6 +1,4 @@
 import styled, { css } from "styled-components";
-import { TypeColorInterface } from "../../types";
-import { typeColorConverter } from "../PokemonDataDisplay/pokemonTypeColorConverter";
 import {
   HiddenPropertyText,
   hoverDisplayCss,
