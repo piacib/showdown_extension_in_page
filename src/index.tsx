@@ -7,12 +7,15 @@ import { ThemeProvider } from "styled-components";
 import "./locationChange.js";
 import { devRoomId, isDevelopmentMode } from "./developmentMode";
 import FontStyles from "./FontStyles";
+import { GlobalStyles } from "./GlobalStyles";
 console.log("isDevelopmentMode", isDevelopmentMode);
 if (isDevelopmentMode) {
   const root = createRoot(document.body as HTMLElement);
   console.log("root", root);
   root.render(
     <React.StrictMode>
+      <GlobalStyles />
+
       <FontStyles />
       <ThemeProvider theme={theme}>
         <App roomId={devRoomId} />
