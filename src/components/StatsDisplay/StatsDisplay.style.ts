@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export const StatsContainer = styled.div`
-  grid-row: 2/4;
+  grid-row: 2/3;
   grid-column: 2/4;
   max-width: 18rem;
   display: grid;
