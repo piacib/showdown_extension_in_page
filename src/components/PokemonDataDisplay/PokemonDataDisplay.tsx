@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isRandomBattleReturn, isTypeName, TypeName } from "../../types";
 import { dexSearchPrepper } from "../../functions";
-import { RandomBattlePokemonDisplay } from "./RandomBattlePokemonDisplay";
 import { PropertiesContainer, PokemonName, HeaderContainer } from "./DataDisplay.style";
 import DamageDisplay from "../DamageDisplay/DamageDisplay";
 import TypeDisplay from "../TypesDisplay/TypesDisplay";
@@ -10,13 +9,15 @@ import OtherFormatsDisplay from "./OtherFormatsDisplay";
 import { Dex } from "@pkmn/dex";
 import useResizeObserver from "use-resize-observer";
 import { AppProps } from "../../App";
+import RandomBattlePokemonDisplay from "./RandomBattlePokemonDisplay";
+
 const { Species } = Dex.data;
 
 interface PokemonDataDisplayProps extends AppProps {
   pokemon: string;
 }
 const displayCutOff = 300;
-export const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
+const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
   console.log("PokemonDataDisplay", pokemon, roomId);
   const [typesArray, setTypesArray] = useState<TypeName[] | null>(null);
   const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
@@ -70,3 +71,4 @@ export const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps)
     </>
   );
 };
+export default PokemonDataDisplay;
