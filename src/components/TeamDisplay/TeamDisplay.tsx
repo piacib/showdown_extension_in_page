@@ -11,13 +11,15 @@ import {
   getPokemonName,
   config,
 } from "./TeamDisplay.functions";
-import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import { isDevelopmentMode, testTeam } from "../../developmentMode";
 import { AppProps } from "../../App";
 import { useTeams } from "./useTeams";
 import { isRandomBattle } from "../../functions";
 import PokeDexScreen from "../PokeDexScreen/PokeDex";
+import PokemonDataDisplay from "../PokemonDataDisplay/PokemonDataDisplay";
+// const PokemonDataDisplay = React.lazy(() => import("../PokemonDataDisplay/PokemonDataDisplay"));
+
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
