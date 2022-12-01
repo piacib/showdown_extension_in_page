@@ -51,7 +51,7 @@ export const ContainerBottom = styled.div`
   width: 100%;
 `;
 export const BarContainer = styled.div`
-  width: 25px;
+  width: 10%;
   margin-right: 5px;
   * {
     width: 100%;
