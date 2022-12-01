@@ -17,7 +17,7 @@ const MovesDisplay: React.FC<MovesDisplayProps> = ({ moves }) => {
   console.log(moves);
   return (
     <MovesContainer>
-      Moves:
+      <h3>Moves:</h3>
       {moves.map((move) => (
         <MoveBtn background={move.type} key={move.name}>
           <p>{move.name}</p>
