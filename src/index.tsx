@@ -36,7 +36,6 @@ const addDisplay = (battleRoom: HTMLElement) => {
     return;
   }
   const container = createContainer(roomId, battleRoom);
-
   const root = createRoot(container!);
   root.render(
     <>
