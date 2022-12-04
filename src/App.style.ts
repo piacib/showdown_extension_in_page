@@ -19,18 +19,21 @@ export const Refresh = styled.img`
   width: 100%;
 `;
 export const Button = styled.button`
-  --height: 40px
-  width: 200px;
+  /* --height: 40px;
+  width: 200px; */
   border: none;
-  height: var(--height);
-  line-height: var(--height);
+  /* height: var(--height); */
+  /* line-height: var(--height); */
   white-space: 0;
-  grid-row: 1;
-  grid-column: 2;
+  /* grid-row: 1; */
+  /* grid-column: 2; */
   border-radius: 20px;
-  justify-self: center;
-  background-color: rgb(237, 85, 100);
-  align-self: center;
+  /* justify-self: center; */
+  background-color: ${(props) => props.theme.color.pokedexRed};
+  /* align-self: center; */
+  position: absolute;
+  left: 5px;
+  top: 25px;
 `;
 interface RefProp extends React.FC {
   changeDisplay: boolean;
