@@ -37,5 +37,6 @@ const theme: DefaultTheme = {
       "???": "rgb(117, 117, 117)",
     },
   },
+  buttonBorderRadius: "10px",
 };
 export { theme };
