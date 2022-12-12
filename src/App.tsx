@@ -33,15 +33,14 @@ const App: React.FC<AppProps> = ({ roomId }) => {
       }
     },
   });
+ 
   return (
     <>
       <AppDisplay changeDisplay={changeDisplay} ref={ref}>
-        <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>
-          Swap to {opponentsTeam ? "User's Team" : "Opponent's Team"}
-        </Button>
         <TypeWriterContainer>
           <h1>Poke Info</h1>
         </TypeWriterContainer>
+        <Button onClick={() => setOpponentsTeam(!opponentsTeam)}>Switch Team</Button>
         <TeamDisplay roomId={roomId} opponentsTeam={opponentsTeam} />
       </AppDisplay>
       <BottomBorder />
