@@ -17,8 +17,7 @@ export const Refresh = styled.img`
   width: 100%;
 `;
 export const Button = styled.button`
-  --height: 40px
-  width: 200px;
+  --height: 20px;
   border: none;
   height: var(--height);
   line-height: var(--height);
@@ -28,7 +27,8 @@ export const Button = styled.button`
   border-radius: 20px;
   justify-self: center;
   background-color: rgb(237, 85, 100);
-  align-self: center;
+  align-self: end;
+  margin-bottom: 1rem;
 `;
 interface RefProp extends React.FC {
   changeDisplay: boolean;
@@ -39,6 +39,7 @@ export const AppDisplay = styled.div<RefProp>`
   display: ${(props) => (props.changeDisplay ? "flex" : "grid")};
   min-height: 250px;
   flex-direction: column;
+  font-size: 12px;
 `;
 export const BottomBorder = styled.div`
   margin: 6px 0;
