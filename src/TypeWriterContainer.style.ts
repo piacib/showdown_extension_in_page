@@ -26,6 +26,7 @@ export const TypeWriterContainer = styled.div`
   * {
     font-family: "VT323";
     height: 1em;
+    font-size: 3rem;
     width: fit-content;
     overflow: hidden; /* Ensures the content is not revealed until the animation */
     border-right: 0.25em solid black; /* The typwriter cursor */
