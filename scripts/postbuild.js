@@ -22,7 +22,6 @@ const js = readFile("assets", "index", "js");
 const css = readFile("assets", "index", "css");
 const woff = readFile("assets", "VT323-Regular", "woff");
 const woff2 = readFile("assets", "VT323-Regular", "woff2");
-const logo = readFile("assets", "logo", "svg");
 
 const newManifest = {
   ...manifest,
