@@ -2,7 +2,7 @@ import styled from "styled-components";
 export const StatsContainer = styled.div`
   grid-row: 2/4;
   grid-column: 2/4;
-  max-width: 18rem;
+  max-width: 15rem;
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
