@@ -23,14 +23,17 @@ if (isDevelopmentMode) {
 const addDisplay = (battleRoom: HTMLElement) => {
   console.log("adding display", battleRoom);
   if (!battleRoom) {
-    // not in battle, return early
+    // not in battle/ not random battle, return early
     return;
   }
-  /** room-battle-${string}-${number} */
+  /** room-battle-${battletype}-${rndnumber} */
   const roomId: String = battleRoom.id;
   if (!roomId.startsWith("room-battle")) {
     return;
   }
+  // if (!roomId.includes("random")) {
+  //   return;
+  // }
   const appId = `react-root-${roomId}`;
   const rootEl = document.getElementById(appId);
   if (rootEl) {
