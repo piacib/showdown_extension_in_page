@@ -1,9 +1,6 @@
 import React from "react";
 import { AbilitiesContainer } from "./Abilities.style";
-import {
-  PropertyBtn,
-  HiddenPropertyText,
-} from "../PokemonDataDisplay/DataDisplay.style";
+import { PropertyBtn, HiddenPropertyText } from "../PokemonDataDisplay/DataDisplay.style";
 import { Dex } from "@pkmn/dex";
 import { dexSearchPrepper } from "../../functions";
 
@@ -18,9 +15,7 @@ const AbilitiesDisplay: React.FC<AbilitiesDisplayProps> = ({ abilities }) => {
       {abilities.map((ability) => (
         <PropertyBtn key={ability}>
           {ability}
-          <HiddenPropertyText>
-            {Abilities[dexSearchPrepper(ability)].shortDesc}
-          </HiddenPropertyText>
+          <HiddenPropertyText>{Abilities[dexSearchPrepper(ability)]?.shortDesc}</HiddenPropertyText>
         </PropertyBtn>
       ))}
     </AbilitiesContainer>
