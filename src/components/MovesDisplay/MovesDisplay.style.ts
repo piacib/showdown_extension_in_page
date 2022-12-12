@@ -4,12 +4,14 @@ import { typeColorConverter } from "../PokemonDataDisplay/pokemonTypeColorConver
 import {
   HiddenPropertyText,
   hoverDisplayCss,
+  propertyCss,
   PropertyDisplay,
 } from "../PokemonDataDisplay/DataDisplay.style";
 import { TypeColoredComponent } from "../EffectivnessDisplay/EffectivnessDisplay.style";
 
 export const MoveBtn = styled(TypeColoredComponent)`
   ${hoverDisplayCss}
+  ${propertyCss}
   &:hover ${HiddenPropertyText} {
     left: 0;
     min-width: 170px;
@@ -43,7 +45,6 @@ export const TypeColorBackground = css<TypeColorInterface>`
 export const MoveType = styled(MoveProperty)`
   ${TypeColorBackground}
   padding: ${(props) => props.theme.padding.small};
-  /* ${(props) => props.theme.padding.medium}; */
   width: fit-content;
   margin: 0 auto;
 `;
