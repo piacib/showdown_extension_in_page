@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+
 export const PropertyDisplay = styled.div`
   height: fit-content;
   display: flex;
@@ -7,18 +8,23 @@ export const PropertyDisplay = styled.div`
   flex-wrap: wrap;
   align-items: center;
   position: relative;
-  /* padding-left: 1.8rem; */
 `;
 export const HiddenPropertyText = styled.div`
   display: none;
 `;
-export const hoverDisplayCss = css`
+export const propertyCss = css`
   padding: ${(props) => props.theme.padding.medium};
   text-align: center;
   margin: 2px;
-  border: 2px solid black;
-  font-size: 0.8rem;
-  /* position: relative; */
+  font-size: 0.95rem;
+  border-radius: ${(props) => props.theme.buttonBorderRadius};
+
+  cursor: pointer;
+  div {
+    cursor: pointer;
+  }
+`;
+export const hoverDisplayCss = css`
   &:hover ${HiddenPropertyText} {
     display: block;
     position: absolute;
@@ -28,19 +34,11 @@ export const hoverDisplayCss = css`
     border: 1px solid black;
   }
 `;
-export const HoverDisplay = styled.div`
+export const PropertyBtn = styled.div`
   ${hoverDisplayCss}
-`;
-export const PropertyBtn = styled(HoverDisplay)`
-  &:hover ${HiddenPropertyText} {
-    /* bottom: 2rem; */
-    left: 0;
-    margin-right: 10px;
-    max-width: 250px;
-    min-width: 150px;
-    padding: ${(props) => props.theme.padding.medium};
-    font-size: inherit;
-  }
+  ${propertyCss}
+  border: none;
+  background: lightgrey;
 `;
 export const PokemonName = styled.a`
   align-self: center;
