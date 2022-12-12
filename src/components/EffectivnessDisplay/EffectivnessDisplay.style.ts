@@ -14,9 +14,8 @@ export const DamageGroupContainer = styled.div`
 `;
 export const TypeBox = styled(TypeColoredComponent)`
   margin: 5px;
-
   padding: ${(props) => props.theme.padding.small} ${(props) => props.theme.padding.medium};
-  border-radius: 10px;
+  border-radius: ${(props) => props.theme.buttonBorderRadius};
   display: flex;
   align-items: center;
 `;
