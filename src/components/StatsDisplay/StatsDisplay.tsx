@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dex } from "@pkmn/dex";
-import {
-  StatsContainer,
-  StatBox,
-  StatName,
-  StatValue,
-} from "./StatsDisplay.style";
+import { StatsContainer, StatBox, StatName, StatValue } from "./StatsDisplay.style";
 interface Stats {
   hp: number;
   atk: number;
@@ -36,8 +31,10 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({ pokemon }) => {
     <StatsContainer>
       {Object.entries(stats).map((x) => (
         <StatBox key={`${x[0]}`}>
-          <StatName>{x[0]}:</StatName>
-          <StatValue>{x[1]}</StatValue>
+          <StatName>{x[0].toUpperCase()}:</StatName>
+          <StatValue>
+            <b>{x[1]}</b>
+          </StatValue>
         </StatBox>
       ))}
     </StatsContainer>
