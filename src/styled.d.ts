@@ -23,5 +23,6 @@ declare module "styled-components" {
         // [Type in TypeName]: string;
       };
     };
+    buttonBorderRadius: string;
   }
 }
