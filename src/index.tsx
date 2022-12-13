@@ -5,14 +5,17 @@ import { theme } from "./theme";
 import { ThemeProvider } from "styled-components";
 
 import "./locationChange.js";
-import { devRoomId, isDevelopmentMode } from "./developmentMode";
 import FontStyles from "./FontStyles";
+import { GlobalStyles } from "./GlobalStyles";
+import { observerConfig, getBattleRoomID, createContainer } from "./functions";
+import { devRoomId, isDevelopmentMode } from "./developmentMode";
 console.log("isDevelopmentMode", isDevelopmentMode);
 if (isDevelopmentMode) {
   const root = createRoot(document.body as HTMLElement);
   console.log("root", root);
   root.render(
     <React.StrictMode>
+      <GlobalStyles />
       <FontStyles />
       <ThemeProvider theme={theme}>
         <App roomId={devRoomId} />
@@ -20,34 +23,19 @@ if (isDevelopmentMode) {
     </React.StrictMode>
   );
 }
+
 const addDisplay = (battleRoom: HTMLElement) => {
   console.log("adding display", battleRoom);
   if (!battleRoom) {
     // not in battle/ not random battle, return early
     return;
   }
-  /** room-battle-${battletype}-${rndnumber} */
-  const roomId: String = battleRoom.id;
+  /** room-battle-${string}-${number} */
+  const roomId: string = battleRoom.id;
   if (!roomId.startsWith("room-battle")) {
     return;
   }
-  // if (!roomId.includes("random")) {
-  //   return;
-  // }
-  const appId = `react-root-${roomId}`;
-  const rootEl = document.getElementById(appId);
-  if (rootEl) {
-    // element is already added, return early
-    return;
-  }
-  const app = document.createElement("div");
-  app.id = appId;
-  const battleLog = battleRoom.getElementsByClassName("battle-log");
-  if (battleLog && battleLog[0]) {
-    battleLog[0].prepend(app);
-  }
-  const container = document.getElementById(appId);
-
+  const container = createContainer(roomId, battleRoom);
   const root = createRoot(container!);
   root.render(
     <>
@@ -57,19 +45,6 @@ const addDisplay = (battleRoom: HTMLElement) => {
       </ThemeProvider>
     </>
   );
-};
-
-const config = {
-  childList: true,
-  subtree: true,
-};
-const getBattleRoomID = (pathname: string) => {
-  // takes in string returns what follows the last "/"
-  const regexMatch = pathname.match(/(?<=-)(?:.(?!-))+$/);
-  if (regexMatch && regexMatch[0]) {
-    return regexMatch[0];
-  }
-  return "";
 };
 let activeBattleRooms: string[] = [];
 const resetBattleRooms = () => {
@@ -93,7 +68,6 @@ const resetBattleRooms = () => {
   });
   activeBattleRooms = activeBattles;
 };
-
 const checkBattleRooms = (roomId: string) => {
   if (activeBattleRooms.includes(roomId)) {
     return false;
@@ -105,8 +79,8 @@ const checkBattleRooms = (roomId: string) => {
   }
   return true;
 };
-
 // // checks for tab changes
+// let activeBattleRooms: string[] = [];
 window.addEventListener("load", () => {
   let currentPathname = document.location.pathname;
   let body = document.querySelector("body");
@@ -119,7 +93,7 @@ window.addEventListener("load", () => {
         const roomId = getBattleRoomID(document.location.pathname);
         if (roomId) {
           checkBattleRooms(roomId);
-          console.log("battleRooms", activeBattleRooms);
+          // console.log("battleRooms", activeBattleRooms);
         } else {
           resetBattleRooms();
         }
@@ -128,6 +102,6 @@ window.addEventListener("load", () => {
   });
   if (body) {
     console.log("load observer added");
-    observer.observe(body, config);
+    observer.observe(body, observerConfig);
   }
 });

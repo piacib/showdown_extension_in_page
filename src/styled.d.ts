@@ -22,6 +22,7 @@ declare module "styled-components" {
         [key: string]: string;
         // [Type in TypeName]: string;
       };
+      pokedexRed: string;
     };
     buttonBorderRadius: string;
   }

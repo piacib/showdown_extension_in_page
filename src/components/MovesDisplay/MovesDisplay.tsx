@@ -18,25 +18,24 @@ const MovesDisplay: React.FC<MovesDisplayProps> = ({ moves }) => {
   console.log(moves);
   return (
     <MovesContainer>
-      Moves:
-      {moves &&
-        moves.map((move) => (
-          <MoveBtn background={move.type} key={move.name}>
-            {move.name}
-            <HiddenPropertyText>
-              <MoveInfo>
-                <MoveDescription>{move?.shortDesc}</MoveDescription>
-                <MoveType background={move.type}>{move.type}</MoveType>
-                {typeof move.accuracy === "number" && (
-                  <MoveProperty>Accuracy: {move.accuracy}%</MoveProperty>
-                )}
-                {Boolean(move.priority) && <MoveProperty>Priority: {move.priority}</MoveProperty>}
-                {Boolean(move.basePower) && <MoveProperty>Power: {move.basePower}</MoveProperty>}
-                <MoveProperty>Category: {move.category}</MoveProperty>
-              </MoveInfo>
-            </HiddenPropertyText>
-          </MoveBtn>
-        ))}
+      <h3>Moves:</h3>
+      {moves.map((move) => (
+        <MoveBtn background={move.type} key={move.name}>
+          <p>{move.name}</p>
+          <HiddenPropertyText>
+            <MoveInfo>
+              <MoveDescription>{move.shortDesc}</MoveDescription>
+              <MoveType background={move.type}>{move.type}</MoveType>
+              {typeof move.accuracy === "number" && (
+                <MoveProperty>Accuracy: {move.accuracy}%</MoveProperty>
+              )}
+              {Boolean(move.priority) && <MoveProperty>Priority: {move.priority}</MoveProperty>}
+              {Boolean(move.basePower) && <MoveProperty>Power: {move.basePower}</MoveProperty>}
+              <MoveProperty>Category: {move.category}</MoveProperty>
+            </MoveInfo>
+          </HiddenPropertyText>
+        </MoveBtn>
+      ))}
     </MovesContainer>
   );
 };

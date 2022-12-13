@@ -11,14 +11,16 @@ const manifest = require("../public/manifest.json");
  * @returns {string} File name - `'main.66848e72.js'`
  */
 function readFile(path, prefix, extension) {
-  const file = new RegExp(`^${prefix}\.[a-z0-9]+\.${extension}$`);
+  const file = new RegExp(`^${prefix}.*\.[a-z0-9]+\.${extension}$`);
   return fs
     .readdirSync(`./build/${path}`)
     .filter((filename) => file.test(filename))
     .map((filename) => `${path}/${filename}`)[0];
 }
 
-const js = readFile("assets", "index", "js");
+const jsIndex = readFile("assets", "index", "js");
+const PokemonDataDisplay = readFile("assets", "Pokemon", "js");
+const js = [jsIndex]; //, PokemonDataDisplay];
 const css = readFile("assets", "index", "css");
 const woff = readFile("assets", "VT323-Regular", "woff");
 const woff2 = readFile("assets", "VT323-Regular", "woff2");
@@ -28,7 +30,7 @@ const newManifest = {
   content_scripts: [
     {
       ...manifest.content_scripts[0],
-      js: [js],
+      js: [...js],
       css: [css],
     },
   ],

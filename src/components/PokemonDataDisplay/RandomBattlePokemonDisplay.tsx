@@ -48,7 +48,7 @@ type RandbatsPokemonData = {
 interface RandomBattlePokemonDisplayProps {
   pokemon: string;
 }
-export const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
+const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
   pokemon,
 }) => {
   console.log("rndbattle loading", pokemon);
@@ -70,3 +70,4 @@ export const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProp
     <></>
   );
 };
+export default RandomBattlePokemonDisplay

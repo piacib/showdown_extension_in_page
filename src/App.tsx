@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { TypeWriterContainer } from "./TypeWriterContainer.style";
-import { AppDisplay, Button, BottomBorder } from "./App.styles";
+import { AppDisplay, Button, BottomBorder } from "./App.style";
 import { TeamDisplay } from "./components/TeamDisplay/TeamDisplay";
 import useResizeObserver from "use-resize-observer";
 const config = {

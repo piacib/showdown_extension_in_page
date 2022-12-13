@@ -11,12 +11,15 @@ import {
   getPokemonName,
   config,
 } from "./TeamDisplay.functions";
-import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import { isDevelopmentMode, testTeam } from "../../developmentMode";
 import { AppProps } from "../../App";
 import { useTeams } from "./useTeams";
 import { isRandomBattle } from "../../functions";
+import PokeDexScreen from "../PokeDexScreen/PokeDex";
+import PokemonDataDisplay from "../PokemonDataDisplay/PokemonDataDisplay";
+// const PokemonDataDisplay = React.lazy(() => import("../PokemonDataDisplay/PokemonDataDisplay"));
+
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
@@ -43,30 +46,6 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
       }
     }
   }, [teams, opponentsTeam]);
-
-  // relic of an older time
-  // useEffect(() => {
-  //   window.addEventListener("load", () => {
-  //     let bodyList = document.querySelector("body");
-  //     // checks mutations for a different pathname
-  //     const observer = new MutationObserver(function (mutations) {
-  //       mutations.forEach(function (mutation) {
-  //         if (battleRoom != document.location.pathname) {
-  //           console.log(
-  //             "app mutation, setting battleroom",
-  //             document.location.pathname
-  //           );
-  //           console.log("roomId", roomId);
-  //           setBattleRoom(document.location.pathname);
-  //         }
-  //       });
-  //     });
-  //     if (bodyList) {
-  //       observer.observe(bodyList, config);
-  //     }
-  //   });
-  // }, []);
-
   const initialLoadCallback = useCallback((mutationList: MutationRecord[]) => {
     for (const mutation of mutationList) {
       const target = mutation.target;
@@ -127,21 +106,22 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   console.log("teams", teams, displayedPokemon);
   return teams && teams[0] ? (
     <>
-      <ButtonDisplay>
-        {teams[Number(opponentsTeam)].map((x, idx) => (
-          <Button
-            key={pokemonNameFilter(x) + idx}
-            onClick={() => {
-              console.log("pokemon clicked", x, getPokemonName(x));
-
-              setDisplayedPokemon(getPokemonName(x));
-            }}
-            disabled={x === "Not revealed"}
-          >
-            <SpriteImage name={pokemonNameFilter(x)} />
-          </Button>
-        ))}
-      </ButtonDisplay>
+      <PokeDexScreen>
+        <ButtonDisplay>
+          {teams[Number(opponentsTeam)].map((x, idx) => (
+            <Button
+              key={pokemonNameFilter(x) + idx}
+              onClick={() => {
+                console.log("pokemon clicked", x, getPokemonName(x));
+                setDisplayedPokemon(getPokemonName(x));
+              }}
+              disabled={x === "Not revealed"}
+            >
+              <SpriteImage name={pokemonNameFilter(x)} />
+            </Button>
+          ))}
+        </ButtonDisplay>
+      </PokeDexScreen>
 
       {displayedPokemon ? (
         <PokemonDataDisplay pokemon={displayedPokemon} roomId={roomId} />

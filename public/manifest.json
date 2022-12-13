@@ -5,7 +5,7 @@
   "permissions": ["activeTab"],
   "content_scripts": [
     {
-      "matches": ["https://blank.org/", "https://play.pokemonshowdown.com/*"],
+      "matches": ["https://play.pokemonshowdown.com/*"],
       "run_at": "document_idle",
       "js": [],
       "css": [],

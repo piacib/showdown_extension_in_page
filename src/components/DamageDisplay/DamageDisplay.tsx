@@ -1,30 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { DamageContainer } from "./DamageDisplay.styles";
-import { damageCalculator } from "../../functions/damageFunctions";
+import { damageCalculator } from "../../functions";
 import { LoadingScreen } from "../LoadingScreen";
 import { TypeName, TypeNamesArr } from "../../types";
 import EffectivnessDisplay from "../EffectivnessDisplay/EffectivnessDisplay";
 
 type DamageObj = {
   [Type in TypeName]: number;
-  // Bug: number;
-  // Dark: number;
-  // Dragon: number;
-  // Electric: number;
-  // Fairy: number;
-  // Fighting: number;
-  // Fire: number;
-  // Flying: number;
-  // Ghost: number;
-  // Grass: number;
-  // Ground: number;
-  // Ice: number;
-  // Normal: number;
-  // Poison: number;
-  // Psychic: number;
-  // Rock: number;
-  // Steel: number;
-  // Water: number;
 };
 
 interface DamageDisplayProps {
