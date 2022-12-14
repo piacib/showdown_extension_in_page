@@ -9,23 +9,27 @@ import { useTeams } from "./useTeams";
 import { isRandomBattle } from "../../functions";
 import PokeDexScreen from "../PokeDexScreen/PokeDex";
 import PokemonDataDisplay from "../PokemonDataDisplay/PokemonDataDisplay";
-
+const LoadingButtonDisplay = () => (
+  <PokeDexScreen>
+    <ButtonDisplay>
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+      <SpriteImage name={""} />
+    </ButtonDisplay>
+  </PokeDexScreen>
+);
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
 // fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   console.log("TeamDisplay", opponentsTeam, roomId);
-  const [teams, setTeams] = useTeams();
+  const [teams] = useTeams(roomId);
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
-  const [messageLogAdded, setMessageLogAdded] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isDevelopmentMode) {
-      console.log("devmode team");
-      setTeams(roomId, testTeam);
-    }
-  }, []);
+  // const [messageLogAdded, setMessageLogAdded] = useMessageLog(roomId);
 
   useEffect(() => {
     if (teams) {
@@ -36,64 +40,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
       }
     }
   }, [teams, opponentsTeam]);
-  const initialLoadCallback = useCallback((mutationList: MutationRecord[]) => {
-    for (const mutation of mutationList) {
-      const target = mutation.target;
-      if (mutation.target instanceof HTMLDivElement) {
-        mutation.target.className === "inner message-log";
-        setMessageLogAdded(true);
-        console.log("message log found", mutationList);
-      }
-    }
-  }, []);
-  const battleRoomEl = document.getElementById(roomId);
-  console.log("team, battleRoomEl, roomId", battleRoomEl, roomId);
-  const bodyObserver = new MutationObserver(initialLoadCallback);
-  // checks if battleroom and messagelog are present and if not
-  // adds body observer to see when they're added
 
-  useEffect(() => {
-    if (
-      battleRoomEl &&
-      battleRoomEl?.getElementsByClassName("inner message-log")[0] === undefined
-    ) {
-      console.log("adding body observer");
-      bodyObserver.observe(document.body, config);
-    } else {
-      setMessageLogAdded(true);
-    }
-    return () => bodyObserver.disconnect();
-  }, []);
-
-  // if message log added add message log observer
-  // to watch for new turns
-
-  useEffect(() => {
-    const messageLog = battleRoomEl?.getElementsByClassName("inner message-log")[0];
-    const callback = (mutationList: MutationRecord[]) => {
-      for (const mutation of mutationList) {
-        if (mutation.type === "childList" && mutation.addedNodes[0]?.nodeName === "H2") {
-          setTeams(roomId);
-        }
-      }
-    };
-    const messageLogObserver = new MutationObserver(callback);
-    if (messageLogAdded) {
-      console.log("bodyObserver.disconnect(), setTeams(), messageLogObserver.observe", messageLog);
-      bodyObserver.disconnect();
-      if (messageLog) {
-        console.log("messageLogObserver");
-        setTeams(roomId);
-        messageLogObserver.observe(messageLog, config);
-        if (!isRandomBattle(roomId)) {
-          setTeams(roomId);
-        }
-      }
-    }
-    return () => messageLogObserver.disconnect();
-  }, [messageLogAdded]);
-
-  console.log("teams", teams, displayedPokemon);
   return teams && teams[0] ? (
     <>
       <PokeDexScreen>
@@ -102,7 +49,6 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
             <Button
               key={pokemonNameFilter(x) + idx}
               onClick={() => {
-                console.log("pokemon clicked", x, getPokemonName(x));
                 setDisplayedPokemon(getPokemonName(x));
               }}
               disabled={x === "Not revealed"}
@@ -120,13 +66,6 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
       )}
     </>
   ) : (
-    <ButtonDisplay>
-      <SpriteImage name={""} />
-      <SpriteImage name={""} />
-      <SpriteImage name={""} />
-      <SpriteImage name={""} />
-      <SpriteImage name={""} />
-      <SpriteImage name={""} />
-    </ButtonDisplay>
+    <LoadingButtonDisplay />
   );
 };
