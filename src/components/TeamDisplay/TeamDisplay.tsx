@@ -1,16 +1,7 @@
-import React, { Dispatch, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, ButtonDisplay } from "./TeamDisplay.style";
-// import { PokemonDataDisplay } from "../PokemonDataDisplay/PokemonDataDisplay";
-import { isRandomBattleReturn } from "../../types";
-// import { OpponentsTeamUnavailable } from "../ErrorScreens/OpponentsTeamUnavailable";
-// import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import SpriteImage from "../SpriteImage";
-import {
-  getCurrentPokemon,
-  pokemonNameFilter,
-  getPokemonName,
-  config,
-} from "./TeamDisplay.functions";
+import { pokemonNameFilter, getPokemonName, config } from "./TeamDisplay.functions";
 import { PokemonUnavailable } from "../ErrorScreens/PokemonUnavailable";
 import { isDevelopmentMode, testTeam } from "../../developmentMode";
 import { AppProps } from "../../App";
@@ -18,12 +9,11 @@ import { useTeams } from "./useTeams";
 import { isRandomBattle } from "../../functions";
 import PokeDexScreen from "../PokeDexScreen/PokeDex";
 import PokemonDataDisplay from "../PokemonDataDisplay/PokemonDataDisplay";
-// const PokemonDataDisplay = React.lazy(() => import("../PokemonDataDisplay/PokemonDataDisplay"));
 
 interface TeamProps extends AppProps {
   opponentsTeam: boolean;
 }
-//fetches latest pokemon data from auto updating github dataset
+// fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   console.log("TeamDisplay", opponentsTeam, roomId);
   const [teams, setTeams] = useTeams();
