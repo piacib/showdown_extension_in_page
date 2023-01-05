@@ -18,6 +18,12 @@ export interface PokemonData {
   moves: string[];
   abilities: string[];
   items: string[];
+  roles?: {
+    [key: string]: {
+      moves: string[];
+      teraTypes: string[];
+    };
+  };
 }
 export const TypeNamesArr = [
   "Normal",
