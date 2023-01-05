@@ -29,7 +29,6 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   console.log("TeamDisplay", opponentsTeam, roomId);
   const [teams] = useTeams(roomId);
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
-  // const [messageLogAdded, setMessageLogAdded] = useMessageLog(roomId);
 
   useEffect(() => {
     if (teams) {
@@ -39,7 +38,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
         setDisplayedPokemon(displayedTeam[0]);
       }
     }
-  }, [teams, opponentsTeam]);
+  }, [teams, opponentsTeam, displayedPokemon]);
 
   return teams && teams[0] ? (
     <>
