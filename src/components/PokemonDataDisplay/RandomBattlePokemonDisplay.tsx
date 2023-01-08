@@ -21,9 +21,9 @@ const getBattleType = () => {
   const regMatch = pathname.match(/(?<=\-).+?(?=\-)/);
   return regMatch ? regMatch[0] : "";
 };
-const getMoves = (pokemonData: RandomBattlePokemonData) => {
-  if (pokemonData) {
-    return pokemonData?.moves?.map((move) => Moves[dexSearchPrepper(move)]);
+export const getMoves = (moveData: string[] | undefined) => {
+  if (moveData) {
+    return moveData.map((move) => Moves[dexSearchPrepper(move)]);
   }
   return [];
 };
@@ -64,21 +64,24 @@ const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
   pokemon,
   isGen9 = false,
 }) => {
-  console.log("rndbattle loading", pokemon);
+  // console.log("rndbattle loading", pokemon);
   const [randbatsPokemonData] = useRandomBattleData();
   const pokemonName = pokemon[0].toUpperCase() + pokemon.slice(1);
   if (Object.keys(randbatsPokemonData).length > 1 && !randbatsPokemonData[pokemonName]) {
     console.error("no data for this pokemon", randbatsPokemonData, pokemonName, pokemon);
   }
-  const movesData = getMoves(randbatsPokemonData[pokemonName]);
+  const movesData = getMoves(randbatsPokemonData[pokemonName]?.moves);
+  const rolesData = randbatsPokemonData[pokemonName]?.roles;
   return randbatsPokemonData[pokemonName] ? (
     <>
-      <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
-      <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
-      {isGen9 ? (
-        <RolesDisplay pokemonData={randbatsPokemonData[pokemonName]} />
+      {rolesData ? (
+        <RolesDisplay pokemonData={rolesData} initialRole={Object.keys(rolesData)[0]} />
       ) : (
-        <MovesDisplay movesData={movesData} />
+        <>
+          <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
+          <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
+          <MovesDisplay movesData={movesData} />
+        </>
       )}
     </>
   ) : (
