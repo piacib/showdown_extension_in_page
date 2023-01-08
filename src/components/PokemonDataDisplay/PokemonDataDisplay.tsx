@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isRandomBattleReturn, isTypeName, TypeName } from "../../types";
+import { isTypeName, TypeName } from "../../types";
 import { dexSearchPrepper } from "../../functions";
 import { PropertiesContainer, PokemonName, HeaderContainer } from "./DataDisplay.style";
 import DamageDisplay from "../DamageDisplay/DamageDisplay";
@@ -21,7 +21,7 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
   console.log("PokemonDataDisplay", pokemon, roomId);
   const [typesArray, setTypesArray] = useState<TypeName[] | null>(null);
   const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
-  const { ref, width, height } = useResizeObserver<HTMLDivElement>({
+  const { ref } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width, height }) => {
       if (!width || !height) {
         return;
@@ -34,7 +34,6 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
       }
     },
   });
-  const isRandomBattle = roomId.includes("random");
   useEffect(() => {
     if (Dex.species.get(pokemon).exists) {
       let newArr: TypeName[] = [];
@@ -50,6 +49,8 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
       setTypesArray(newArr);
     }
   }, [pokemon]);
+  const isGen9 = roomId.includes("gen9");
+  const isRandomBattle = roomId.includes("random");
   const regExPokemonName = pokemon.match(/^([\w]+)-/);
   return (
     <>
@@ -62,7 +63,7 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
       <DamageDisplay typesArray={typesArray} />
       <PropertiesContainer>
         {isRandomBattle ? (
-          <RandomBattlePokemonDisplay pokemon={pokemon} />
+          <RandomBattlePokemonDisplay pokemon={pokemon} isGen9={isGen9} />
         ) : (
           <OtherFormatsDisplay pokemon={pokemon} />
         )}
