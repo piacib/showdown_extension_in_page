@@ -1,58 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { MovesContainer, MoveType } from "../MovesDisplay/MovesDisplay.style";
-import { MoveData } from "@pkmn/dex";
-import { HiddenPropertyText, PropertyBtn } from "../PokemonDataDisplay/DataDisplay.style";
-
-interface PokemonDataGen9 {
-  moves: string[];
-  abilities: string[];
-  items: string[];
-  roles: {
-    [key: string]: {
-      moves: string[];
-      teraTypes: string[];
-    };
-  };
-}
-const removeDuplicates = (arr: any[]) => {
-  return [...new Set(arr)];
-};
+import { PropertyDisplay } from "../PokemonDataDisplay/DataDisplay.style";
+import { RolesBtn } from "./RolesDisplay.style";
+import AbilitiesDisplay from "../AbilitiesDisplay/AbilitiesDisplay";
+import ItemsDisplay from "../ItemsDisplay/ItemsDisplay";
+import MovesDisplay from "../MovesDisplay/MovesDisplay";
+import { RolesData } from "../../types";
+import { getMoves } from "../PokemonDataDisplay/RandomBattlePokemonDisplay";
+import { TypeBox } from "../EffectivnessDisplay/EffectivnessDisplay.style";
 interface RolesDisplayProps {
-  pokemonData: PokemonDataGen9;
+  pokemonData: RolesData;
+  initialRole: string;
 }
-const RolesDisplay: React.FC<RolesDisplayProps> = ({ pokemonData }) => {
-  const [rolesData, setRolesData] = useState<MoveData[]>([]);
-  const roles = pokemonData.roles;
+const RolesDisplay: React.FC<RolesDisplayProps> = ({ pokemonData, initialRole }) => {
+  const [role, setRole] = useState<string>("");
   useEffect(() => {
-    console.log("usee md");
-    if (roles) {
-    }
-
-    return () => {};
-  }, [pokemonData?.moves, pokemonData.roles]);
-  console.log("roles", roles);
+    setRole(Object.keys(pokemonData)[0]);
+  }, [pokemonData]);
   return (
-    <MovesContainer>
-      <h3>Roles:</h3>
-      {Object.keys(roles).map((role) => (
-        <PropertyBtn key={role}>
-          {role}
-          <HiddenPropertyText>
-            <p>teraTypes:</p>
-
-            {roles[role].teraTypes.map((teraType) => (
-              <MoveType background={teraType}>{teraType}</MoveType>
+    <>
+      <PropertyDisplay>
+        <h3>Roles:</h3>
+        {Object.keys(pokemonData).map((role) => (
+          <RolesBtn onClick={() => setRole(role)} key={role}>
+            {role}
+          </RolesBtn>
+        ))}
+      </PropertyDisplay>
+      {pokemonData[role] && (
+        <>
+          <PropertyDisplay>
+            TeraTypes:
+            {pokemonData[role].teraTypes.map((x) => (
+              <TypeBox background={x}>{x}</TypeBox>
             ))}
-
-            <p>moves: </p>
-            {roles[role].moves.map((move) => (
-              <></>
-              // <MoveInfoPopUp move={move} />
-            ))}
-          </HiddenPropertyText>
-        </PropertyBtn>
-      ))}
-    </MovesContainer>
+          </PropertyDisplay>
+          <AbilitiesDisplay abilities={pokemonData[role].abilities} />
+          <ItemsDisplay items={pokemonData[role].items} />
+          <MovesDisplay movesData={getMoves(pokemonData[role].moves)} />
+        </>
+      )}
+    </>
   );
 };
 
