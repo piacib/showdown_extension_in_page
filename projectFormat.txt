@@ -1,0 +1,26 @@
+<AppDisplay changeDisplay={changeDisplay} ref={ref}>
+    <TeamDisplay roomId={roomId} opponentsTeam={opponentsTeam}>
+        <PokemonDataDisplay pokemon={displayedPokemon} roomId={roomId}>
+            <TypeDisplay types={typesArray} />
+            <DamageDisplay typesArray={typesArray} />
+            isRandomBattle?
+            <RandomBattlePokemonDisplay pokemon={pokemon} isGen9={isGen9}>
+                <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
+                <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
+                isGen9?
+                <RolesDisplay pokemonData={randbatsPokemonData[pokemonName]}>
+                    <MoveInfoPopUp move={move} />
+                </RolesDisplay>
+                !isGen9?
+                <MovesDisplay movesData={movesData}>
+                    <MoveInfoPopUp move={move} />
+                </MovesDisplay>
+            </RandomBattlePokemonDisplay>
+            !isRandomBattle?
+            <OtherFormatsDisplay pokemon={pokemon} />
+            
+            <StatsDisplay pokemon={pokemon} />
+        </PokemonDataDisplay>
+    </TeamDisplay>
+</AppDisplay>
+<BottomBorder />
