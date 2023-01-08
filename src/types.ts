@@ -12,7 +12,7 @@ export interface PokemonResponse {
 }
 export type isRandomBattleReturn = null | false | string;
 export interface TypeColorInterface {
-  background: TypeName;
+  background: TypeName | string;
 }
 export interface PokemonData {
   moves: string[];
