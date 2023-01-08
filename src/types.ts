@@ -14,16 +14,21 @@ export type isRandomBattleReturn = null | false | string;
 export interface TypeColorInterface {
   background: TypeName | string;
 }
+export interface RolesData {
+  [key: string]: {
+    moves: string[];
+    teraTypes: string[];
+    abilities: string[];
+    evs: { [key: string]: number };
+    items: string[];
+    ivs: { [key: string]: number };
+  };
+}
 export interface PokemonData {
   moves: string[];
   abilities: string[];
   items: string[];
-  roles?: {
-    [key: string]: {
-      moves: string[];
-      teraTypes: string[];
-    };
-  };
+  roles?: RolesData;
 }
 export const TypeNamesArr = [
   "Normal",
