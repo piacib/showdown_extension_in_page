@@ -67,7 +67,8 @@ export const getMoveData = (data: string[] | null) => {
 };
 
 type TypeColorObjType = {
-  [Type in TypeName]: string;
+  // [Type in TypeName]: string;
+  [key in string]: string;
 };
 export const typeColorConverter: TypeColorObjType = {
   Normal: "rgb(168, 167, 120)",
