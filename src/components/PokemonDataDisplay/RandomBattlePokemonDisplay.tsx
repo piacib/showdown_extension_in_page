@@ -6,26 +6,45 @@ import ItemsDisplay from "../ItemsDisplay/ItemsDisplay";
 import MovesDisplay from "../MovesDisplay/MovesDisplay";
 import AbilitiesDisplay from "../AbilitiesDisplay/AbilitiesDisplay";
 import { devPathname, isDevelopmentMode } from "../../developmentMode";
+import RolesDisplay from "../RolesDisplay/RolesDisplay";
 const { Moves } = Dex.data;
+const emptyRandbatsPokemonData = {
+  "": {
+    level: 0,
+    abilities: [],
+    items: [],
+    moves: [],
+  },
+};
+const getBattleType = () => {
+  const pathname = !isDevelopmentMode ? document.location.pathname : devPathname;
+  const regMatch = pathname.match(/(?<=\-).+?(?=\-)/);
+  return regMatch ? regMatch[0] : "";
+};
+const getMoves = (pokemonData: RandomBattlePokemonData) => {
+  if (pokemonData) {
+    return pokemonData?.moves?.map((move) => Moves[dexSearchPrepper(move)]);
+  }
+  return [];
+};
+const getRoles = (pokemonData: RandomBattlePokemonData) => {};
+
+interface RandomBattlePokemonData extends PokemonData {
+  level: number;
+}
+interface RandomBattleData {
+  [key: string]: RandomBattlePokemonData;
+}
 const useRandomBattleData = (): [
-  RandbatsPokemonData,
-  React.Dispatch<React.SetStateAction<RandbatsPokemonData>>
+  RandomBattleData,
+  React.Dispatch<React.SetStateAction<RandomBattleData>>
 ] => {
-  const [randbatsPokemonData, setRandbatsPokemonData] = useState<RandbatsPokemonData>({
-    "": {
-      level: 0,
-      abilities: [],
-      items: [],
-      moves: [],
-    },
-  });
+  const [randbatsPokemonData, setRandbatsPokemonData] =
+    useState<RandomBattleData>(emptyRandbatsPokemonData);
   // fetchs random pokemon data only on startup
   useEffect(() => {
     async function asyncFetchRandomPokemonData() {
-      const pathname = !isDevelopmentMode ? document.location.pathname : devPathname;
-      const regMatch = pathname.match(/(?<=\-).+?(?=\-)/);
-      const battleType = regMatch ? regMatch[0] : "";
-      console.log("battleType", battleType);
+      const battleType = getBattleType();
       console.log(`https://pkmn.github.io/randbats/data/${battleType}.json`);
       const fetchData = await fetch(`https://pkmn.github.io/randbats/data/${battleType}.json`);
       const response = await fetchData.json();
@@ -37,37 +56,33 @@ const useRandomBattleData = (): [
   return [randbatsPokemonData, setRandbatsPokemonData];
 };
 
-type RandbatsPokemonData = {
-  [key: string]: {
-    level: Number;
-    abilities: string[];
-    items: string[];
-    moves: string[];
-  };
-};
 interface RandomBattlePokemonDisplayProps {
   pokemon: string;
+  isGen9?: boolean;
 }
 const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
   pokemon,
+  isGen9 = false,
 }) => {
   console.log("rndbattle loading", pokemon);
-  const [randbatsPokemonData, setRandbatsPokemonData] = useRandomBattleData();
+  const [randbatsPokemonData] = useRandomBattleData();
   const pokemonName = pokemon[0].toUpperCase() + pokemon.slice(1);
   if (Object.keys(randbatsPokemonData).length > 1 && !randbatsPokemonData[pokemonName]) {
     console.error("no data for this pokemon", randbatsPokemonData, pokemonName, pokemon);
   }
-  const movesData = randbatsPokemonData[pokemonName]?.moves.map(
-    (move) => Moves[dexSearchPrepper(move)]
-  );
+  const movesData = getMoves(randbatsPokemonData[pokemonName]);
   return randbatsPokemonData[pokemonName] ? (
     <>
       <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
       <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
-      <MovesDisplay moves={movesData} />
+      {isGen9 ? (
+        <RolesDisplay pokemonData={randbatsPokemonData[pokemonName]} />
+      ) : (
+        <MovesDisplay movesData={movesData} />
+      )}
     </>
   ) : (
     <></>
   );
 };
-export default RandomBattlePokemonDisplay
+export default RandomBattlePokemonDisplay;
