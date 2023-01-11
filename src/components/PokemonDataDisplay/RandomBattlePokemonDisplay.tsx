@@ -64,23 +64,23 @@ const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
   pokemon,
   isGen9 = false,
 }) => {
-  // console.log("rndbattle loading", pokemon);
   const [randbatsPokemonData] = useRandomBattleData();
-  const pokemonName = pokemon[0].toUpperCase() + pokemon.slice(1);
-  if (Object.keys(randbatsPokemonData).length > 1 && !randbatsPokemonData[pokemonName]) {
-    console.error("no data for this pokemon", randbatsPokemonData, pokemonName, pokemon);
+
+  if (Object.keys(randbatsPokemonData).length > 1 && !randbatsPokemonData[pokemon]) {
+    console.error("no data for this pokemon", randbatsPokemonData, pokemon);
+    return <></>;
   }
-  const movesData = getMoves(randbatsPokemonData[pokemonName]?.moves);
-  const rolesData = randbatsPokemonData[pokemonName]?.roles;
-  console.log("pokemon Data", randbatsPokemonData[pokemonName]);
-  return randbatsPokemonData[pokemonName] ? (
+  const movesData = getMoves(randbatsPokemonData[pokemon]?.moves);
+  const rolesData = randbatsPokemonData[pokemon]?.roles;
+  console.log("pokemon Data", randbatsPokemonData[pokemon]);
+  return randbatsPokemonData[pokemon] ? (
     <>
       {rolesData ? (
         <RolesDisplay pokemonData={rolesData} initialRole={Object.keys(rolesData)[0]} />
       ) : (
         <>
-          <AbilitiesDisplay abilities={randbatsPokemonData[pokemonName].abilities} />
-          <ItemsDisplay items={randbatsPokemonData[pokemonName].items} />
+          <AbilitiesDisplay abilities={randbatsPokemonData[pokemon].abilities} />
+          <ItemsDisplay items={randbatsPokemonData[pokemon].items} />
           <MovesDisplay movesData={movesData} />
         </>
       )}
