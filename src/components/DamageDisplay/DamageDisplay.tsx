@@ -13,7 +13,6 @@ interface DamageDisplayProps {
   typesArray: TypeName[] | null;
 }
 const DamageDisplay: React.FC<DamageDisplayProps> = ({ typesArray }) => {
-  console.log("DamageDisplay", typesArray);
   const [damageObj, setDamageObj] = useState<DamageObj | null>(null);
   useEffect(() => {
     if (typesArray) {
