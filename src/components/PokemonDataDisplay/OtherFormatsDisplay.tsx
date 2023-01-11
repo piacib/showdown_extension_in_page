@@ -7,7 +7,6 @@ interface OtherFormatsDisplayProps {
 }
 
 const OtherFormatsDisplay = ({ pokemon }: OtherFormatsDisplayProps) => {
-  console.log("OtherFormatsDisplay", pokemon);
   if (pokemon === "Not revealed") {
     return <></>;
   }
