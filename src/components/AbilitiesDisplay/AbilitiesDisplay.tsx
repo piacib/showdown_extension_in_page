@@ -11,7 +11,7 @@ interface AbilitiesDisplayProps {
 const AbilitiesDisplay: React.FC<AbilitiesDisplayProps> = ({ abilities }) => {
   return (
     <AbilitiesContainer>
-      Abilities:
+      <h3>Abilities:</h3>
       {abilities.map((ability) => (
         <PropertyBtn key={ability}>
           {ability}
