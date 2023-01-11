@@ -6,7 +6,6 @@ interface TypesDisplayProps {
   types: TypeName[] | null;
 }
 const TypesDisplay: React.FC<TypesDisplayProps> = ({ types }) => {
-  console.log("TypesDisplay", types);
   if (!types) {
     return <></>;
   }
