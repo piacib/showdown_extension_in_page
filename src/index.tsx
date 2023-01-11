@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { theme } from "./theme";
 import { ThemeProvider } from "styled-components";
-
 import "./locationChange.js";
 import FontStyles from "./FontStyles";
 import { GlobalStyles } from "./GlobalStyles";
@@ -87,13 +86,12 @@ window.addEventListener("load", () => {
   // checks mutations for a different pathname
   const observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      if (currentPathname != document.location.pathname) {
+      if (currentPathname !== document.location.pathname) {
         console.log("pathchanged", getBattleRoomID(document.location.pathname));
         currentPathname = document.location.pathname;
         const roomId = getBattleRoomID(document.location.pathname);
         if (roomId) {
           checkBattleRooms(roomId);
-          // console.log("battleRooms", activeBattleRooms);
         } else {
           resetBattleRooms();
         }
@@ -101,7 +99,12 @@ window.addEventListener("load", () => {
     });
   });
   if (body) {
-    console.log("load observer added");
+    console.log("load observer added", currentPathname);
+    const roomId = getBattleRoomID(document.location.pathname);
+    if (roomId) {
+      console.log("refreshed into battle", roomId);
+      checkBattleRooms(roomId);
+    }
     observer.observe(body, observerConfig);
   }
 });
