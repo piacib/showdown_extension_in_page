@@ -16,12 +16,10 @@ export interface AppProps {
   roomId: string;
 }
 const App: React.FC<AppProps> = ({ roomId }) => {
-  console.log("hello from extension");
   const [opponentsTeam, setOpponentsTeam] = useState<boolean>(true);
   const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
   const { ref } = useResizeObserver<HTMLDivElement>({
     onResize: ({ width, height }) => {
-      console.log("onResize", width, height);
       if (!width || !height) {
         return;
       }
