@@ -26,7 +26,6 @@ interface TeamProps extends AppProps {
 }
 // fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
-  console.log("TeamDisplay", opponentsTeam, roomId);
   const [teams] = useTeams(roomId);
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
 
@@ -44,7 +43,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
     <>
       <PokeDexScreen>
         <ButtonDisplay>
-          {teams[Number(opponentsTeam)].map((x, idx) => (
+          {teams[Number(opponentsTeam)]?.map((x, idx) => (
             <Button
               key={pokemonNameFilter(x) + idx}
               onClick={() => {
