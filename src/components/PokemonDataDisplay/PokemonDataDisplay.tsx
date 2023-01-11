@@ -18,7 +18,7 @@ interface PokemonDataDisplayProps extends AppProps {
 }
 const displayCutOff = 300;
 const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
-  console.log("PokemonDataDisplay", pokemon, roomId);
+  console.log("PokemonDataDisplay", pokemon);
   const [typesArray, setTypesArray] = useState<TypeName[] | null>(null);
   const [changeDisplay, setChangeDisplay] = useState<boolean>(false);
   const { ref } = useResizeObserver<HTMLDivElement>({
@@ -52,6 +52,7 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
   const isGen9 = roomId.includes("gen9");
   const isRandomBattle = roomId.includes("random");
   const regExPokemonName = pokemon.match(/^([\w]+)-/);
+  const pokemonName = pokemon[0].toUpperCase() + pokemon.slice(1);
   return (
     <>
       <HeaderContainer ref={ref} changeDisplay={changeDisplay}>
@@ -63,12 +64,12 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
       <DamageDisplay typesArray={typesArray} />
       <PropertiesContainer>
         {isRandomBattle ? (
-          <RandomBattlePokemonDisplay pokemon={pokemon} isGen9={isGen9} />
+          <RandomBattlePokemonDisplay pokemon={pokemonName} isGen9={isGen9} />
         ) : (
-          <OtherFormatsDisplay pokemon={pokemon} />
+          <OtherFormatsDisplay pokemon={pokemonName} />
         )}
       </PropertiesContainer>
-      <StatsDisplay pokemon={pokemon} />
+      <StatsDisplay pokemon={pokemonName} />
     </>
   );
 };
