@@ -19,16 +19,10 @@ export const Refresh = styled.img`
   width: 100%;
 `;
 export const Button = styled.button`
-border: none;
-  /* height: var(--height); */
-  /* line-height: var(--height); */
+  border: none;
   white-space: 0;
-  /* grid-row: 1; */
-  /* grid-column: 2; */
   border-radius: 20px;
-  /* justify-self: center; */
   background-color: ${(props) => props.theme.color.pokedexRed};
-  /* align-self: center; */
   position: absolute;
   left: 5px;
   top: 25px;
