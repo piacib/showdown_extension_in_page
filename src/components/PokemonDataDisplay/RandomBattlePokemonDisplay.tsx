@@ -7,6 +7,7 @@ import MovesDisplay from "../MovesDisplay/MovesDisplay";
 import AbilitiesDisplay from "../AbilitiesDisplay/AbilitiesDisplay";
 import { devPathname, isDevelopmentMode } from "../../developmentMode";
 import RolesDisplay from "../RolesDisplay/RolesDisplay";
+import { PropertiesContainer } from "./DataDisplay.style";
 const { Moves } = Dex.data;
 const emptyRandbatsPokemonData = {
   "": {
@@ -78,11 +79,11 @@ const RandomBattlePokemonDisplay: React.FC<RandomBattlePokemonDisplayProps> = ({
       {rolesData ? (
         <RolesDisplay pokemonData={rolesData} initialRole={Object.keys(rolesData)[0]} />
       ) : (
-        <>
+        <PropertiesContainer>
           <AbilitiesDisplay abilities={randbatsPokemonData[pokemon].abilities} />
           <ItemsDisplay items={randbatsPokemonData[pokemon].items} />
           <MovesDisplay movesData={movesData} />
-        </>
+        </PropertiesContainer>
       )}
     </>
   ) : (
