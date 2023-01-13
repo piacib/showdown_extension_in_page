@@ -16,7 +16,6 @@ export const ContainerTop = styled.div`
 `;
 export const Container = styled.div`
   ${ContainerBorder}
-  grid-row: 2/3;
   grid-column: 1/2;
   display: flex;
   flex-direction: column;
