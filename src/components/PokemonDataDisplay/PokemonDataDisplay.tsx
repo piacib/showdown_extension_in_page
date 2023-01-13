@@ -61,15 +61,15 @@ const PokemonDataDisplay = ({ pokemon, roomId }: PokemonDataDisplayProps) => {
         </PokemonName>
         <TypeDisplay types={typesArray} />
       </HeaderContainer>
-      <DamageDisplay typesArray={typesArray} />
-      <PropertiesContainer>
+      <StatsDisplay pokemon={pokemonName} />
+      <>
         {isRandomBattle ? (
           <RandomBattlePokemonDisplay pokemon={pokemonName} isGen9={isGen9} />
         ) : (
           <OtherFormatsDisplay pokemon={pokemonName} />
         )}
-      </PropertiesContainer>
-      <StatsDisplay pokemon={pokemonName} />
+      </>
+      <DamageDisplay typesArray={typesArray} />
     </>
   );
 };
