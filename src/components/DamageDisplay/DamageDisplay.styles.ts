@@ -3,7 +3,7 @@ import { typeColorConverter } from "../PokemonDataDisplay/pokemonTypeColorConver
 import { TypeColorInterface } from "../../types";
 
 export const DamageContainer = styled.div`
-  grid-row: 4;
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
