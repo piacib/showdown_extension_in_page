@@ -20,7 +20,6 @@ const blinkCaret = keyframes`
   }
 `;
 export const TypeWriterContainer = styled.div`
-  grid-row: 1/2;
   grid-column: 1/2;
   margin: auto;
   * {
