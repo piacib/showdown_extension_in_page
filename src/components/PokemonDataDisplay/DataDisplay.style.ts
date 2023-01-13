@@ -42,7 +42,6 @@ export const PropertyBtn = styled.div`
 `;
 export const PokemonName = styled.a`
   align-self: center;
-  grid-row: 3;
   text-transform: capitalize;
   grid-column: 1/2;
   font-size: 1.8rem;
@@ -52,8 +51,8 @@ export const PokemonName = styled.a`
 `;
 export const PropertiesContainer = styled.div`
   margin: 5px 0 0 0;
-  grid-row: 4;
   grid-column: 2/4;
+  grid-row: 3/6;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
