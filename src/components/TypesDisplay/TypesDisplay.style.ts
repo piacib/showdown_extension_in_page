@@ -16,7 +16,6 @@ interface Props {
   types: number;
 }
 export const TypeContainer = styled.div<Props>`
-  grid-row: 3;
   grid-column: 1;
   display: flex;
   flex-direction: row;
