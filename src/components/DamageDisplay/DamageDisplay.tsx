@@ -8,60 +8,67 @@ import EffectivnessDisplay from "../EffectivnessDisplay/EffectivnessDisplay";
 type DamageObj = {
   [Type in TypeName]: number;
 };
-
+interface EffectObj {
+  0: TypeName[];
+  0.25: TypeName[];
+  0.5: TypeName[];
+  2: TypeName[];
+  4: TypeName[];
+}
 interface DamageDisplayProps {
   typesArray: TypeName[] | null;
 }
 const DamageDisplay: React.FC<DamageDisplayProps> = ({ typesArray }) => {
-  const [damageObj, setDamageObj] = useState<DamageObj | null>(null);
-  useEffect(() => {
-    if (typesArray) {
-      setDamageObj(damageCalculator(typesArray));
-    }
-  }, [typesArray]);
-  if (!damageObj) {
-    return (
-      <DamageContainer>
-        <LoadingScreen />;
-      </DamageContainer>
-    );
-  }
-  const effect: {
-    0: TypeName[];
-    0.25: TypeName[];
-    0.5: TypeName[];
-    2: TypeName[];
-    4: TypeName[];
-  } = {
+  const [effectObj, setEffectObj] = useState<EffectObj>({
     0: [],
     0.25: [],
     0.5: [],
     2: [],
     4: [],
-  };
-
-  const keys = Object.keys(damageObj);
-  TypeNamesArr.forEach((x) => {
-    if (damageObj[x] == 0) {
-      effect[0].push(x);
-    } else if (damageObj[x] == 0.25) {
-      effect[0.25].push(x);
-    } else if (damageObj[x] == 0.5) {
-      effect[0.5].push(x);
-    } else if (damageObj[x] == 2) {
-      effect[2].push(x);
-    } else if (damageObj[x] == 4) {
-      effect[4].push(x);
-    }
   });
+  useEffect(() => {
+    if (typesArray) {
+      const damageObj: DamageObj = damageCalculator(typesArray);
+      let effect: EffectObj = {
+        0: [],
+        0.25: [],
+        0.5: [],
+        2: [],
+        4: [],
+      };
+      TypeNamesArr.forEach((x) => {
+        if (damageObj) {
+          console.log("effect", effect);
+          if (damageObj[x] === 0) {
+            effect[0].push(x);
+          } else if (damageObj[x] === 0.25) {
+            effect[0.25].push(x);
+          } else if (damageObj[x] === 0.5) {
+            effect[0.5].push(x);
+          } else if (damageObj[x] === 2) {
+            effect[2].push(x);
+          } else if (damageObj[x] === 4) {
+            effect[4].push(x);
+          }
+        }
+      });
+      setEffectObj(effect);
+    }
+  }, [typesArray]);
 
   return (
     <DamageContainer>
-      <EffectivnessDisplay damage={"0"} effectivenessArray={effect[0]} />
-      <EffectivnessDisplay damage={"¼"} effectivenessArray={effect[0.25]} />
-      <EffectivnessDisplay damage={"½"} effectivenessArray={effect[0.5]} />
-      <EffectivnessDisplay damage={"2"} effectivenessArray={effect[2]} />
-      <EffectivnessDisplay damage={"4"} effectivenessArray={effect[4]} />
+      {effectObj ? (
+        <>
+          <EffectivnessDisplay damage={"0"} effectivenessArray={effectObj[0]} />
+          <EffectivnessDisplay damage={"¼"} effectivenessArray={effectObj[0.25]} />
+          <EffectivnessDisplay damage={"½"} effectivenessArray={effectObj[0.5]} />
+          <EffectivnessDisplay damage={"2"} effectivenessArray={effectObj[2]} />
+          <EffectivnessDisplay damage={"4"} effectivenessArray={effectObj[4]} />
+        </>
+      ) : (
+        <LoadingScreen />
+      )}
     </DamageContainer>
   );
 };
