@@ -27,43 +27,54 @@ interface TeamProps extends AppProps {
 // fetches latest pokemon data from auto updating github dataset
 export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
   const [teams] = useTeams(roomId);
+  const [index, setIndex] = useState(0);
+
   const [displayedPokemon, setDisplayedPokemon] = useState<string | null>(null);
 
   useEffect(() => {
-    if (teams) {
-      const displayedTeam = teams[Number(opponentsTeam)];
-      if (!displayedPokemon || !displayedTeam.includes(displayedPokemon)) {
-        console.log("chagning pkmdis");
-        setDisplayedPokemon(displayedTeam[0]);
-      }
+    console.log("useEffec teams changed");
+    const defaultPokemon = teams[Number(opponentsTeam)][0];
+    if (defaultPokemon !== "Not Revealed" && teams[Number(opponentsTeam)][1]) {
+      setDisplayedPokemon(teams[Number(opponentsTeam)][0]);
+    }
+  }, [teams]);
+  useEffect(() => {
+    console.log("useEff teams", teams, displayedPokemon);
+    const displayedTeam = teams[Number(opponentsTeam)];
+    if (!displayedPokemon || !displayedTeam.includes(displayedPokemon)) {
+      console.log("chagning pkmdis");
+      setDisplayedPokemon(displayedTeam[0]);
     }
   }, [teams, opponentsTeam, displayedPokemon]);
 
-  return teams && teams[0] ? (
+  console.log("team dispk", displayedPokemon);
+  let pokemon = teams[Number(opponentsTeam)][index];
+  return (
     <>
-      <PokeDexScreen>
-        <ButtonDisplay>
-          {teams[Number(opponentsTeam)]?.map((x, idx) => (
-            <Button
-              key={pokemonNameFilter(x) + idx}
-              onClick={() => {
-                setDisplayedPokemon(getPokemonName(x));
-              }}
-              disabled={x === "Not revealed"}
-            >
-              <SpriteImage name={pokemonNameFilter(x)} />
-            </Button>
-          ))}
-        </ButtonDisplay>
-      </PokeDexScreen>
+      {teams && teams[0] ? (
+        <>
+          <PokeDexScreen>
+            <ButtonDisplay>
+              {teams[Number(opponentsTeam)]?.map((x, idx) => (
+                <Button
+                  key={pokemonNameFilter(x) + idx}
+                  onClick={() => {
+                    setDisplayedPokemon(getPokemonName(x));
+                    setIndex(idx);
+                  }}
+                  disabled={x === "Not revealed"}
+                >
+                  <SpriteImage name={pokemonNameFilter(x)} />
+                </Button>
+              ))}
+            </ButtonDisplay>
+          </PokeDexScreen>
 
-      {displayedPokemon ? (
-        <PokemonDataDisplay pokemon={displayedPokemon} roomId={roomId} />
+          <PokemonDataDisplay pokemon={pokemon} roomId={roomId} />
+        </>
       ) : (
-        <PokemonUnavailable />
+        <LoadingButtonDisplay />
       )}
     </>
-  ) : (
-    <LoadingButtonDisplay />
   );
 };
