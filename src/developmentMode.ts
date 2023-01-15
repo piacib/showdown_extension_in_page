@@ -10,5 +10,5 @@ export const opponentTestTeam = [
   "Abomasnow",
   "Diancie",
 ];
-
+export const testAbilities = ["Cheek Pouch", "Intimidate", "Swift Swim"];
 export const testTeam: [string[], string[]] = [userTestTeam, opponentTestTeam];
