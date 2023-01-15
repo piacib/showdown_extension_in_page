@@ -38,7 +38,6 @@ const DamageDisplay: React.FC<DamageDisplayProps> = ({ typesArray }) => {
       };
       TypeNamesArr.forEach((x) => {
         if (damageObj) {
-          console.log("effect", effect);
           if (damageObj[x] === 0) {
             effect[0].push(x);
           } else if (damageObj[x] === 0.25) {
