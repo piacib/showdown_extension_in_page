@@ -31,7 +31,6 @@ const App: React.FC<AppProps> = ({ roomId }) => {
       }
     },
   });
- 
   return (
     <>
       <AppDisplay changeDisplay={changeDisplay} ref={ref}>
