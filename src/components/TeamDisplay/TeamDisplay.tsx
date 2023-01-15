@@ -31,7 +31,7 @@ export const TeamDisplay = ({ opponentsTeam, roomId }: TeamProps) => {
           ))}
         </ButtonDisplay>
       </PokeDexScreen>
-      <PokemonDataDisplay pokemon={pokemon} roomId={roomId} />
+      {pokemon && <PokemonDataDisplay pokemon={pokemon} roomId={roomId} />}
     </>
   );
 };
