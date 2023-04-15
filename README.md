@@ -1,6 +1,6 @@
 # React Content Script
 
-https://chrome.google.com/webstore/detail/pokeinfo-extension/plolbicmjndjpglocmmgnbppgnadmlfb#:~:text=Poke%20info%20is%20a%20chrome,display%20real%20time%20battle%20information.
+[chrome extension](https://chrome.google.com/webstore/detail/pokeinfo-extension/plolbicmjndjpglocmmgnbppgnadmlfb#:~:text=Poke%20info%20is%20a%20chrome,display%20real%20time%20battle%20information.)
 
 How to inject [React](https://reactjs.org/) app into a Chrome Extension [Content Script](https://developer.chrome.com/docs/extensions/mv3/content_scripts/).
 
